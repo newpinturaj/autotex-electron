@@ -1,0 +1,18 @@
+{
+  "name": "autotex",
+  "description": "AutoTeX creates LaTeX file and PDF file of predefined template such as Report, Resume, etc.",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "PINTU RAJ",
+    "email": "newpinturaj@gmail.com",
+    "url": "https://github.com/newpinturaj"
+  },
+  "main": "./dist/main/main.js",
+  "scripts": {
+    "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "postinstall": "npm run rebuild && npm run link-modules",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
+  },
+  "dependencies": {}
+}

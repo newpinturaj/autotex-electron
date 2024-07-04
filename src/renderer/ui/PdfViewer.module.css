@@ -1,0 +1,7 @@
+.container {
+  height: 95vh;
+  /* width: 8.3in; */
+  width: 98vw;
+  overflow: scroll;
+  scrollbar-width: none;
+}
