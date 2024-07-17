@@ -1,0 +1,212 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[margin=2.54cm, left=2.54cm, right=1.25cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{blindtext}
+\usepackage{parskip}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{ragged2e}
+\usepackage{hyperref}
+
+% --------- HEADER & FOOTER SETTING ---------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\vspace{0.5em}\fontsize{10}{12}\selectfont Project Report - 8th Semester}
+\fancyhead[R]{\vspace{0.5em}\fontsize{10}{12}\selectfont [20106107005, 011, 022]}
+
+\fancyfoot[L]{\vspace{0.5em}\fontsize{10}{12}\selectfont Dept. of IT, MIT Muzaffarpur}
+\fancyfoot[R]{\vspace{0.5em}\fontsize{10}{12}\selectfont \thepage}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\setlength{\headheight}{18pt}
+
+% --------- PARAGRAPH SETTING ---------
+\SetSinglespace{1.1}
+\singlespacing
+
+% --------- META DATA ---------
+% \title{AutoTeX}
+% \author{PINTU RAJ}
+
+
+\begin{document}
+
+%--------- CUSTOM ENVIRONMENT ---------
+\newenvironment{groupcenter}
+{
+    \begin{center}
+    \setstretch{1.1}
+}
+{
+    \end{center}
+}
+
+% --------- DOCUMENT START ---------
+
+% --------- COVER PAGE ---------
+\begin{titlepage}
+    \onehalfspacing
+    \setlength{\parskip}{1.7em plus .5em minus .5em}
+    \centering
+    \textbf{\huge AutoTeX}\par
+    \textbf{A Project Report}\par
+    \textit{submitted in partial fulfilment for the award of the degree of}\par
+    \textbf{Batchelor of Technology}\par
+    \textbf{in}\par
+    \textbf{INFORMATION TECHNOLOGY}\par
+    SUBMITTED BY\par
+    
+    \begin{table}[H]
+        \centering
+        \doublespacing
+        \setlength{\tabcolsep}{12pt}
+        \renewcommand{\arraystretch}{0.75}
+        \begin{tabular}{cccc}
+            
+            \textbf{Aman Kumar} &  \textbf{Ayush Kumar} & \textbf{Pintu Raj} \\
+            (20106107005) & (20106107011) & (20106107022) 
+        \end{tabular}
+    \end{table}
+
+    SUBMITTED TO\par
+    \begin{groupcenter}
+    \textbf{Mr. Ashish Kumar}\\
+    \textit{Assistant Professor}\\
+    \textit{Dept. of CSE}\\
+    \end{groupcenter}
+    
+    \vspace{1cm plus 0.5cm}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.2\textwidth]{logo.png}
+    \end{figure}
+    \vspace{1cm plus 0.5cm}
+    
+    \begin{groupcenter}
+    \bfseries
+    Department of Information Technology\\
+    Muzaffarpur Intitute of Technology, Muzaffarpur\\
+    July 2024
+    \end{groupcenter}
+    
+\end{titlepage}
+
+% --------- CANDIDATE's DECLARATION PAGE ---------
+\begin{center}
+    % \vspace*{0.05cm}
+    \textbf{\Large Candidate's Declaration}
+\end{center}
+
+We hereby certify that work presented in this report entitled \textbf{AutoTeX} in fulfilment of the requirements for the award of Bachelor of Technology with specialization in Information Technology, submitted to \textbf{Muzaffarpur Intitute of Technology, Muzaffarpur} is authentic record of our own work carried out during the period of April 2024 to Augest 2024 under the supervision of \textbf{Mr. Ashish Kumar}, Assistant Professor, Department of Computer Science Engineering, Muzaffarpur Intitute of Technology, Muzaffarpur.\par
+
+We have not submittted the matter presented in this report to any other university or institute for the award of any degree or for any other purpose.\par
+
+\vspace{1cm}
+Date: \today
+
+\vspace{1.5cm}
+\begin{table}[H]
+    \centering
+    \setlength{\tabcolsep}{18pt}
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{cccc}
+        \textbf{Aman Kumar} & \textbf{Ayush Kumar} & \textbf{Pintu Raj} \\
+        (20106107005) & (20106107011) & (20106107022)
+    \end{tabular}
+\end{table}
+
+\vspace{0.5cm}
+
+This is to certify the statement submitted by the above candidates are correct and true to the best of our knowledge, further it is recommended for external evaluation.
+
+\begin{space}
+\vspace{2cm}
+\textbf{Mr. Ashish Kumar}\\
+\textit{Assistant Professor, CSE}
+\end{space}
+
+% --------- CERTIFICATE PAGE ---------
+\newpage
+\begin{center}
+    % \vspace*{0.05cm}
+    \textbf{\Large Certificate}
+\end{center}
+
+This is to certify that the project \textbf{AutoTeX} is a record of the authentic \& bonafide work done of the following students, for fulfilment of the requirement for the award of Bachelor of Technology in Information Technology, submitted to \textbf{Muzaffarpur Intitute of Technology, Muzaffarpur}, has been carried out during the period, April 2024 to August 2024 under the supervision of \textbf{Mr. Ashish Kumar}, Assistant Professor, Department of Computer Science Engineering, Muzaffarpur Institute of Technology, Muzaffarpur.
+
+\vspace{1.5cm}
+\begin{table}[H]
+    \centering
+    \setlength{\tabcolsep}{18pt}
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{cccc}
+        \textbf{Aman Kumar} & \textbf{Ayush Kumar} & \textbf{Pintu Raj} \\
+        (20106107005) & (20106107011) & (20106107022)
+    \end{tabular}
+\end{table}
+
+\begin{space}
+\vspace{3cm}
+\textbf{Mr. Ashish Kumar}\\
+\textit{Assistant Professor, CSE}
+\end{space}
+
+\begin{space}
+\vspace{3cm}
+\textbf{Dr. Y.N. Sharma}\\
+\textit{Head of Department, IT}
+\end{space}
+
+\begin{space}
+\vspace{3cm}
+\textbf{External Examiner}\par
+\end{space}
+
+% --------- ACKNOWLEDGEMENT PAGE ---------
+\newpage
+
+\newpage
+\begin{center}
+    % \vspace*{0.05cm}
+    \textbf{\Large Acknowledgement}
+\end{center}
+
+It gives us immense pleasure to express our heartfelt gratitude and indebtedness to our project guide \textbf{Mr. Ashish Kumar}, Assistant Professor, Department of Computer Science Engineering, for his valuable support and encouragement throughout the project. We are highly obliged to him for providing us this opportunity to carry out our ideas and work throughout the project duration and helping us to attain the successful completion of this Project.\par
+We are highly grateful to \textbf{Dr. Y.N. Sharma}, HoD, Information Technology, for permitting us to utilize all the necessary facilities of the department.\par
+We extend our sincere gratitude to the faculties and staff of the department for their support and help throughout our project. We would like to express our deep appreciation toward our classmate for providing us the necessary suggestions in our project and a cordial environment.
+
+
+
+% --------- TABLE OF CONTENT ---------
+\newpage
+% \vspace*{0.05cm}
+\tableofcontents
+
+% --------- MAIN CONTENT ---------
+\newpage
+\section{Introduction}
+\subsection{History}
+\subsubsection{Before 1876 A.D.}
+\blindtext
+\subsubsection{After 1876 A.D.}
+\blindtext
+
+\section{Planning of Work}
+\subsection{Feasibility Study}
+\blindtext
+\subsection{Requirement Analysis}
+\blindtext
+
+% --------- REFERENCES ---------
+\newpage
+\section{References}
+
+\begin{itemize}
+    \item React Docs. \url{https://react.dev}
+    \item React Router Docs. \url{https://reactrouter.com/en/main/start/tutorial}
+    \item Vite Docs. \url{https://vitejs.dev/guide/}
+\end{itemize}
+
+\end{document}

@@ -9,11 +9,13 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
+import fs from 'node:fs';
+import latex from 'node-latex';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-import { resolveHtmlPath } from './util';
+import { resolveHtmlPath, toArrayBuffer } from './util';
 
 class AppUpdater {
   constructor() {
@@ -51,7 +53,7 @@ const installExtensions = async () => {
   return installer
     .default(
       extensions.map((name) => installer[name]),
-      forceDownload,
+      { forceDownload, loadExtensionOptions: { allowFileAccess: true } },
     )
     .catch(console.log);
 };
@@ -135,3 +137,104 @@ app
     });
   })
   .catch(console.log);
+
+// --------------- CUSTOM IPC ------------------
+ipcMain.on('test-ipc', () => {
+  const input = fs.createReadStream(`${__dirname}/assets/report.tex`, 'utf-8');
+  const output = fs.createWriteStream(`${__dirname}/output.pdf`);
+  console.log('dirname: ', `${__dirname}/assets/report.tex`);
+  const pdf = latex(input, {
+    inputs: `${__dirname}/assets`,
+  });
+
+  pdf.pipe(output);
+  pdf.on('error', (err) => {
+    console.log(err);
+  });
+
+  pdf.on('finish', () => {
+    console.log('PDF GENERATED');
+  });
+});
+
+ipcMain.handle('dialog:openFile', () => {
+  const data = dialog.showOpenDialogSync(mainWindow as BrowserWindow);
+  console.log(data);
+  return data;
+});
+
+// ipcMain.handle('dialog:savePDF', async (event, data) => {
+//   // const pdf = await fs.createReadStream(`${__dirname}/output.pdf`, 'utf-8');
+
+//   const { canceled, filePath } = await dialog.showSaveDialog(
+//     mainWindow as BrowserWindow,
+//     {
+//       defaultPath: 'output.txt',
+//       filters: [{ extensions: ['txt'], name: 'Text Document' }],
+//     },
+//   );
+
+//   if (!canceled) {
+//     await fs.writeFile(filePath as string, 'This is text', (err) =>
+//       console.log(err),
+//     );
+//   }
+// });
+
+// PDF Generate
+
+ipcMain.handle('dialog:savePDF', async (event, data) => {
+  const { canceled, filePath } = await dialog.showSaveDialog(
+    mainWindow as BrowserWindow,
+    {
+      defaultPath: 'output.pdf',
+      filters: [{ extensions: ['pdf'], name: 'PDF Document' }],
+    },
+  );
+
+  if (!canceled) {
+    const RESOURCES_PATH = app.isPackaged
+      ? path.join(process.resourcesPath, 'assets/latexImages')
+      : path.join(__dirname, '../../assets/latexImages');
+
+    const pdf = latex(data, {
+      inputs: RESOURCES_PATH,
+      passes: 2,
+    });
+    const output = fs.createWriteStream(filePath as string);
+
+    pdf.pipe(output);
+    pdf.on('error', (err) => {
+      console.log(err);
+      dialog.showErrorBox(err.name, err.message);
+      output.end(() => {
+        fs.unlink(filePath as string, (delErr) => {
+          if (delErr) {
+            dialog.showErrorBox(
+              delErr?.name || 'Error',
+              delErr?.message || "File can't be deleted",
+            );
+          }
+        });
+      });
+    });
+
+    pdf.on('finish', () => {
+      console.log('PDF Generated');
+    });
+  }
+});
+
+ipcMain.handle('load:pdf', async () => {
+  const { filePaths, canceled } = await dialog.showOpenDialog({
+    title: 'Select PDF',
+  });
+
+  if (!canceled) {
+    const pdf = fs.readFileSync(filePaths[0]);
+    const data = toArrayBuffer(pdf);
+    return data;
+  }
+
+  return null;
+});

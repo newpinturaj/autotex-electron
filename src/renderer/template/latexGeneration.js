@@ -1,5 +1,7 @@
 
 export function genPreamble(data) {
+  const sup = ['st', 'nd', 'rd', 'th'] // number superscript eg: 1st, 2nd
+
   const str = `
 \\documentclass[12pt, a4paper]{article}
 \\usepackage[margin=2.54cm, left=2.54cm, right=1.25cm]{geometry}
@@ -15,8 +17,8 @@ export function genPreamble(data) {
 % --------- HEADER & FOOTER SETTING ---------
 \\pagestyle{fancy}
 \\fancyhf{}
-\\fancyhead[L]{\\vspace{0.5em}\\fontsize{10}{12}\\selectfont Project Report - ${data.sem}th Semester}
-\\fancyhead[R]{\\vspace{0.5em}\\fontsize{10}{12}\\selectfont [${data.stu_reg1}, ${data.stu_reg2.slice(-3)}, ${data.stu_reg3.slice(-3)}, ${data.stu_reg4.slice(-3)}]}
+\\fancyhead[L]{\\vspace{0.5em}\\fontsize{10}{12}\\selectfont Project Report - ${data.sem}${data.sem < 4 ? sup[data.sem - 1] : sup [3]} Semester}
+\\fancyhead[R]{\\vspace{0.5em}\\fontsize{10}{12}\\selectfont [${data.stu_reg1}${data.stu_reg2 && `, ${data.stu_reg2.slice(-3)}`}${data.stu_reg3 && `, ${data.stu_reg3.slice(-3)}`}${data.stu_reg4 && `, ${data.stu_reg4.slice(-3)}`}]}
 
 \\fancyfoot[L]{\\vspace{0.5em}\\fontsize{10}{12}\\selectfont Dept. of ${data.stu_dept}, MIT Muzaffarpur}
 \\fancyfoot[R]{\\vspace{0.5em}\\fontsize{10}{12}\\selectfont \\thepage}
@@ -85,9 +87,8 @@ export function genCover(data) {
         \\setlength{\\tabcolsep}{12pt}
         \\renewcommand{\\arraystretch}{0.75}
         \\begin{tabular}{cccc}
-
-            \\textbf{${data.stu_name1}} &  \\textbf{${data.stu_name2}} & \\textbf{${data.stu_name3}} & \\textbf{${data.stu_name4}} \\\\
-            (${data.stu_reg1}) & (${data.stu_reg2}) & (${data.stu_reg3}) & (${data.stu_reg4})
+          \\textbf{${data.stu_name1}} ${data.stu_name2 &&  `& \\textbf{${data.stu_name2}}`} ${data.stu_name3 &&  `& \\textbf{${data.stu_name3}}`} ${data.stu_name4 &&  `& \\textbf{${data.stu_name4}}`} \\\\
+          (${data.stu_reg1}) ${data.stu_reg2 && `& (${data.stu_reg2})`} ${data.stu_reg3 && `& (${data.stu_reg3})`} ${data.stu_reg4 && `& (${data.stu_reg4})`}
         \\end{tabular}
     \\end{table}
 
@@ -148,8 +149,8 @@ Date: ${Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'num
     \\setlength{\\tabcolsep}{18pt}
     \\renewcommand{\\arraystretch}{1.2}
     \\begin{tabular}{cccc}
-        \\textbf{${data.stu_name1}} & \\textbf{${data.stu_name2}} & \\textbf{${data.stu_name3}} & \\textbf{${data.stu_name4}} \\\\
-        (${data.stu_reg1}) & (${data.stu_reg2}) & (${data.stu_reg3}) & (${data.stu_reg4})
+        \\textbf{${data.stu_name1}} ${data.stu_name2 &&  `& \\textbf{${data.stu_name2}}`} ${data.stu_name3 &&  `& \\textbf{${data.stu_name3}}`} ${data.stu_name4 &&  `& \\textbf{${data.stu_name4}}`} \\\\
+        (${data.stu_reg1}) ${data.stu_reg2 && `& (${data.stu_reg2})`} ${data.stu_reg3 && `& (${data.stu_reg3})`} ${data.stu_reg4 && `& (${data.stu_reg4})`}
     \\end{tabular}
 \\end{table}
 
@@ -194,8 +195,8 @@ This is to certify that the project \\textbf{${data.title}} is a record of the a
     \\setlength{\\tabcolsep}{18pt}
     \\renewcommand{\\arraystretch}{1.2}
     \\begin{tabular}{cccc}
-        \\textbf{${data.stu_name1}} & \\textbf{${data.stu_name2}} & \\textbf{${data.stu_name3}} & \\textbf{${data.stu_name4}} \\\\
-        (${data.stu_reg1}) & (${data.stu_reg2}) & (${data.stu_reg3}) & (${data.stu_reg4})
+        \\textbf{${data.stu_name1}} ${data.stu_name2 &&  `& \\textbf{${data.stu_name2}}`} ${data.stu_name3 &&  `& \\textbf{${data.stu_name3}}`} ${data.stu_name4 &&  `& \\textbf{${data.stu_name4}}`} \\\\
+        (${data.stu_reg1}) ${data.stu_reg2 && `& (${data.stu_reg2})`} ${data.stu_reg3 && `& (${data.stu_reg3})`} ${data.stu_reg4 && `& (${data.stu_reg4})`}
     \\end{tabular}
 \\end{table}
 
@@ -261,40 +262,92 @@ export function genTableOfContent() {
 }
 
 export function genMainContent(data) {
-  const str = `
+//   const str = `
+// % --------- MAIN CONTENT ---------
+// \\newpage
+// \\section{Introduction}
+// \\subsection{History}
+// \\subsubsection{Before 1876 A.D.}
+// \\blindtext
+// \\subsubsection{After 1876 A.D.}
+// \\blindtext
+
+// \\section{Planning of Work}
+// \\subsection{Feasibility Study}
+// \\blindtext
+// \\subsection{Requirement Analysis}
+// \\blindtext
+//   `;
+  let str = `
 % --------- MAIN CONTENT ---------
 \\newpage
-\\section{Introduction}
-\\subsection{History}
-\\subsubsection{Before 1876 A.D.}
-\\blindtext
-\\subsubsection{After 1876 A.D.}
-\\blindtext
+`;
 
-\\section{Planning of Work}
-\\subsection{Feasibility Study}
-\\blindtext
-\\subsection{Requirement Analysis}
-\\blindtext
-  `;
+  str = str.concat(data.map(obj => {
+    let tempStr = ""
+    if(obj.head) {
+      tempStr = tempStr.concat(`\\section{${obj.head}}
+`)
+    }
+    if(obj.sHead) {
+      tempStr = tempStr.concat(`\\subsection{${obj.sHead}}
+`)
+    }
+    if(obj.ssHead) {
+      tempStr = tempStr.concat(`\\subsubsection{${obj.ssHead}}
+`)
+    }
+    if(obj.para) {
+      tempStr = tempStr.concat(`${obj.para} \\par
+`)
+    }
+
+    return tempStr;
+  }).join(''))
 
   return str;
 }
 
 export function genRef(data) {
-  const str = `
+//   let str = `
+// % --------- REFERENCES ---------
+// \\newpage
+// \\section{References}
+
+// \\begin{itemize}
+//     \\item React Docs. \\url{https://react.dev}
+//     \\item React Router Docs. \\url{https://reactrouter.com/en/main/start/tutorial}
+//     \\item Vite Docs. \\url{https://vitejs.dev/guide/}
+// \\end{itemize}
+//   `;
+  let str = `
 % --------- REFERENCES ---------
 \\newpage
 \\section{References}
 
-\\begin{itemize}
-    \\item React Docs. \\url{https://react.dev}
-    \\item React Router Docs. \\url{https://reactrouter.com/en/main/start/tutorial}
-    \\item Vite Docs. \\url{https://vitejs.dev/guide/}
-\\end{itemize}
+  \\begin{itemize}
   `;
 
-  return str;
+  if(data){
+    str = str.concat(data.map(item => {
+      let tempStr = ""
+      if(item.refText){
+        tempStr = tempStr.concat(`  \\item ${item.refText} - `)
+      }
+      if(item.refUrl){
+        tempStr = tempStr.concat(`\\url{${item.refUrl}}
+  `)
+      }
+
+      return tempStr;
+    }).join(""))
+
+    str = str.concat(`\\end{itemize}
+      `)
+    return str;
+  }
+
+  return undefined;
 }
 
 export function genCloser() {

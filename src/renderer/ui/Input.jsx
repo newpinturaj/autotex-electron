@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './Input.module.css';
 
 // function Input(props) {
 //   // const { register } = useFormContext();
@@ -18,7 +19,7 @@ import React from 'react';
 // }
 
 const Input = React.forwardRef((props, ref) => (
-  <div>
+  <div className={styles.container}>
     {/* <input
       name={name}
       onBlur={onBlur}
@@ -26,7 +27,7 @@ const Input = React.forwardRef((props, ref) => (
       onChange={onChange}
       className={styles.input}
     /> */}
-    <input {...props} ref={ref} />
+    <input className={styles.input_field} {...props} ref={ref} />
   </div>
 ));
 

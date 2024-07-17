@@ -1,0 +1,46 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  /* justify-content: center; */
+  gap: 10px;
+  width: 95vw;
+  height: 50%;
+  /* max-width: 700px; Set a max-width for better appearance */
+  margin: 0 auto; /* Center the form horizontally */
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  background-color: rgb(222, 218, 17);
+  /* background-color: #f9f9f9; */
+}
+
+/* .formGroup {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  border-bottom: 1px solid #cccccc;
+  padding-bottom: 10px;
+  width: auto;
+} */
+.formGroupButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  gap: 40px; /* Adds space between the button and the NavLink */
+  /* padding: 10px 0 10px 0; */
+  width: 100%;
+  /* border: 1px solid black; */
+}
+
+button {
+  background-color: rgb(95, 36, 222);
+  color: #fff;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 7px;
+}

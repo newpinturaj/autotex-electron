@@ -27,3 +27,20 @@ const electronHandler = {
 contextBridge.exposeInMainWorld('electron', electronHandler);
 
 export type ElectronHandler = typeof electronHandler;
+
+// ------------- CUSTOM PRELOADS  ---------------
+
+contextBridge.exposeInMainWorld('test', {
+  clickBtn: (val: { age: string }) => ipcRenderer.send('test-ipc', val),
+});
+
+const apiHandler = {
+  openFile: () => ipcRenderer.invoke('dialog:openFile'),
+  saveAsPDF: (data: string) => ipcRenderer.invoke('dialog:savePDF', data),
+  saveAsTex: () => ipcRenderer.invoke('dialog:saveTex'),
+  loadPDF: () => ipcRenderer.invoke('load:pdf'),
+};
+
+contextBridge.exposeInMainWorld('electronAPI', apiHandler);
+
+export type ElectronAPI = typeof apiHandler;
