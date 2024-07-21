@@ -5,6 +5,7 @@ import MainContent from './features/college-report/MainContent';
 import References from './features/college-report/References';
 import AppLayout from './ui/AppLayout';
 // import Test from './Test';
+import './App.css';
 
 function App() {
   return (

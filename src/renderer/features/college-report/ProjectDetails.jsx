@@ -1,9 +1,11 @@
 import { useFormContext } from 'react-hook-form';
 import FormRow from '../../ui/FormRow';
 import Input from '../../ui/Input';
-import styles from './ProjectDetails.module.css';
 import Select from '../../ui/Select';
 import Option from '../../ui/Option';
+import Fieldset from '../../ui/Fieldset';
+import Container from '../../ui/Container';
+import FlexBox from '../../ui/FlexBox';
 
 function ProjectDetails() {
   const { register, formState } = useFormContext();
@@ -11,59 +13,27 @@ function ProjectDetails() {
   const dept = ['IT', 'CSE', 'ECE', 'ME', 'EE', 'LT'];
 
   return (
-    <div className={styles.projectContainer}>
-      <h3 className={styles.heading}>Project Details</h3>
-      <div className={styles.formContainer}>
-        <div>
-          <FormRow label="Title" error={errors?.title?.message}>
-            <Input
-              id="title"
-              {...register('title', { required: 'This field is required' })}
-            />
-          </FormRow>
-        </div>
-        <div>
-          <FormRow
-            label="Submission Date"
-            error={errors?.submission_date?.message}
-          >
-            <Input
-              id="submission_date"
-              type="date"
-              {...register('submission_date', {
-                required: 'This field is required',
-              })}
-            />
-          </FormRow>
-        </div>
-      </div>
-      <div className={styles.workContainer}>
-        <div>
-          <FormRow
-            id="workLabel"
-            label="Work Duration"
-            error={errors?.work_duration?.message}
-          >
-            <div>
-              <p>From</p>
-              <Input
-                id="work_duration_from"
-                type="date"
-                {...register('work_duration.from', {
-                  required: 'This field is required',
-                })}
-              />
-              <p>To</p>
-              <Input
-                id="work_duration_to"
-                type="date"
-                {...register('work_duration.to', {
-                  required: 'This field is required',
-                })}
-              />
-            </div>
-          </FormRow>
-        </div>
+    <Container heading="Project Details">
+      <FormRow label="Title" error={errors?.title?.message}>
+        <Input
+          id="title"
+          {...register('title', { required: 'This field is required' })}
+        />
+      </FormRow>
+      <FlexBox>
+        <FormRow
+          label="Submission Date"
+          error={errors?.submission_date?.message}
+        >
+          <Input
+            id="submission_date"
+            type="date"
+            {...register('submission_date', {
+              required: 'This field is required',
+            })}
+          />
+        </FormRow>
+
         <FormRow label="Department" error={errors?.stu_dept?.message}>
           <Select
             {...register('stu_dept', { required: 'This field is required' })}
@@ -75,8 +45,37 @@ function ProjectDetails() {
             ))}
           </Select>
         </FormRow>
-      </div>
-    </div>
+      </FlexBox>
+
+      <Fieldset name="Work Duration">
+        <FormRow
+          id="workLabel_from"
+          label="From"
+          error={errors?.work_duration?.to?.message}
+        >
+          <Input
+            id="work_duration_from"
+            type="date"
+            {...register('work_duration.from', {
+              required: 'This field is required',
+            })}
+          />
+        </FormRow>
+        <FormRow
+          id="workLabel_to"
+          label="To"
+          error={errors?.work_duration?.from?.message}
+        >
+          <Input
+            id="work_duration_to"
+            type="date"
+            {...register('work_duration.to', {
+              required: 'This field is required',
+            })}
+          />
+        </FormRow>
+      </Fieldset>
+    </Container>
   );
 }
 

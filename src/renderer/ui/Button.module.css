@@ -1,0 +1,23 @@
+.primary {
+  background-color: rgba(93, 31, 226, 0.943);
+  color: #fff;
+  padding: 0.5em 0.7em;
+  border: none;
+  cursor: pointer;
+  border-radius: 2px;
+  font-size: 1.2rem;
+}
+.primary:hover {
+  background-color: rgb(79, 12, 223);
+}
+
+.secondary {
+  border: 2px solid rgb(95, 36, 222);
+  background-color: transparent;
+  font-weight: 700;
+  color: rgb(95, 36, 222);
+  padding: 0.3em 0.5em;
+  cursor: pointer;
+  border-radius: 2px;
+  font-size: 1.2rem;
+}

@@ -1,46 +1,38 @@
-.formContainer {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  /* justify-content: center; */
-  gap: 10px;
-  width: 95vw;
-  height: 50%;
-  /* max-width: 700px; Set a max-width for better appearance */
-  margin: 0 auto; /* Center the form horizontally */
-  padding: 20px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  background-color: rgb(222, 218, 17);
-  /* background-color: #f9f9f9; */
+.container {
+  /* border: 1px solid blue; */
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto 50px;
 }
 
-/* .formGroup {
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  border-bottom: 1px solid #cccccc;
-  padding-bottom: 10px;
-  width: auto;
-} */
-.formGroupButton {
+.projectContainer {
+  /* border: 2px solid green; */
+  border-right: 0.5px solid silver;
+
+  border-radius: 5px;
+}
+
+.studentContainer {
+  /* border: 2px solid blue; */
+  border-left: 0.5px solid silver;
+  grid-row-start: span 2;
+  border-radius: 5px;
+}
+
+.facultyContainer {
+  /* border: 2px solid red; */
+  border-right: 0.5px solid silver;
+  border-top: 0.5px solid silver;
+  border-radius: 5px;
+}
+
+.buttonContainer {
+  border-top: 1px solid silver;
+  /* border: 1px solid red; */
+  grid-column-start: span 2;
   display: flex;
   flex-direction: row;
-  justify-content: end;
-  align-items: center;
-  gap: 40px; /* Adds space between the button and the NavLink */
-  /* padding: 10px 0 10px 0; */
-  width: 100%;
-  /* border: 1px solid black; */
-}
-
-button {
-  background-color: rgb(95, 36, 222);
-  color: #fff;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 7px;
+  justify-content: right;
+  padding: 1em;
 }

@@ -9,6 +9,7 @@ function FormRow({ label, error, children }) {
         </label>
       )}
       {children}
+      {/* <span className={styles.error}>This field is required</span> */}
       {error && <span className={styles.error}>{error}</span>}
     </div>
   );

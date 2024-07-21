@@ -1,70 +1,45 @@
-import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+// import { DevTool } from '@hookform/devtools';
+
 import ProjectDetails from './ProjectDetails';
 import StudentsDetails from './StudentsDetails';
 import FacultyDetails from './FacultyDetails';
 import Form from '../../ui/Form';
 import styles from './ReportBasicDetails.module.css';
-
-import {
-  genAck,
-  genCandidateDecl,
-  genCertificate,
-  genCloser,
-  genCover,
-  genPreamble,
-  genRef,
-  genTableOfContent,
-} from '../../template/latexGeneration';
-import { NavLink } from 'react-router-dom';
-import genLatex from './common';
+import Button from '../../ui/Button';
 
 function ReportBasicDetails() {
-  const methods = useForm();
-  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
+  const methods = useForm({
+    defaultValues: JSON.parse(window.localStorage.getItem('basicInfo')),
+  });
 
   const onSubmit = async (value) => {
-    const latex = genLatex();
-
-    const res = await window.electronAPI.saveAsPDF(latex);
-    console.log(res);
-    setMessage(res);
-
-    // window.localStorage.setItem('basicInfo', value);
-    // console.log('basicInfo saved');
-  };
-
-  const saveToLocalStorage = () => {
-    window.localStorage.setItem(
-      'basicInfo',
-      JSON.stringify(methods.getValues()),
-    );
-    console.log(methods.getValues());
+    window.localStorage.setItem('basicInfo', JSON.stringify(value));
+    navigate('/mainContent');
   };
 
   return (
     <>
       <FormProvider {...methods}>
         <Form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className={styles.formContainer}>
-            <div className={styles.formGroup}>
+          <div className={styles.container}>
+            <div className={styles.projectContainer}>
               <ProjectDetails />
             </div>
-            <div className={styles.formGroup}>
+            <div className={styles.studentContainer}>
               <StudentsDetails />
             </div>
-            <div className={styles.formGroup}>
+            <div className={styles.facultyContainer}>
               <FacultyDetails />
             </div>
             {/* <hr /> <hr /> */}
             {/* <AdditionalDetails /> */}
-            <div className={styles.formGroupButton}>
-              <button type="submit">Generate PDF</button>
-            </div>
-            <div className={styles.formGroupButton}>
-              <NavLink to="/mainContent" onClick={saveToLocalStorage}>
-                Next
-              </NavLink>
+            <div className={styles.buttonContainer}>
+              <Button primary type="submit">
+                Save & Next &#9002;
+              </Button>
             </div>
           </div>
         </Form>

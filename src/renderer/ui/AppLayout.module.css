@@ -1,35 +1,15 @@
 .container {
-  border: 1px solid blue;
-  margin: 0 auto;
-  width: 98vw;
-  height: 11.7in;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch; /* Ensures children stretch to the container's height */
+  /* border: 1px solid ridge; */
+  display: grid;
+  grid-template-columns: auto 40vw;
+  height: 100vh;
 }
 
-/* .container {
-  display: grid;
-} */
-
 .left {
-  border: 1px solid red;
-  margin-right: 2px;
-  margin-top: 2px;
-  color: red;
-  height: 100%;
-  flex: 1; /* This will make the left div take the remaining space */
-  display: grid; /* Enable grid layout */
-  grid-template-rows: repeat(8, 1fr); /* Create 8 rows of equal height */
-  grid-template-columns: repeat(2, 1fr); /* Create 2 columns of equal width */
-  gap: 5px; /* Optional: Add gap between rows and columns */
+  /* border: 1px solid green; */
+  overflow: auto;
 }
 
 .right {
-  border: 1px solid green;
-  margin-top: 2px;
-  color: green;
-  height: 100%;
-  width: 8.3in; /* Fixed width for the right div */
-  box-sizing: border-box; /* Ensure padding and border are included in the width and height */
+  /* border: 1px solid green; */
 }

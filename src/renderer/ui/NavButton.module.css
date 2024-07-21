@@ -1,0 +1,12 @@
+.navBtn {
+  color: black;
+  padding: 0.2em 0.5em;
+  border: 1px solid grey;
+  border-radius: 3px;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
+.navBtn:hover {
+  background-color: rgba(128, 128, 128, 0.117);
+}

@@ -1,37 +1,41 @@
-.container {
-  /* position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw; */
-  padding-top: 5px;
-  /* position: relative;
-  display: flex;
-  align-items: center;
-
-  & svg {
-    position: absolute;
-    width: 2.5rem;
-    height: 2.5rem;
-    border: 1px solid green;
-    right: 0.5em;
-    color: var(--color-brand-600);
-    cursor: pointer;
-  } */
+.input_field {
+  font-size: 1.5rem;
+  padding: 0.3em 0.5em;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  outline-color: rgb(95, 36, 222);
 }
 
-.input_field {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 7px;
-  box-sizing: border-box;
-  width: 40vw; /*Approximately 2/3 of the width*/
-  /* font-size: calc(12px + 0.5vw); Responsive font size */
-  /* width: 100%;
-  border: 1px solid var(--color-grey-#ccc); */
-  /* background-color: var(--color-grey-0); */
-  /* border-radius: var(--border-radius-sm);
-  box-shadow: var(--shadow-sm);
-  padding: 0.8rem 1.2rem;
-  position: relative; */
+/* .input_field::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.input_field::before {
+  content: 'Select Image';
+  color: black;
+  display: inline-block;
+  background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid red;
+  border-radius: 2px;
+  padding: 0.3em 0.5em;
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+
+.input_field:hover::before {
+  border-color: black;
+}
+.input_field:active {
+  outline: 0;
+}
+.input_field:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+} */
+
+textarea.input_field {
+  resize: vertical;
 }

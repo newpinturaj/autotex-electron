@@ -102,12 +102,15 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.52.1",
+    "react-icons": "^5.2.1",
     "react-pdf": "^9.1.0",
+    "react-resize-detector": "^11.0.1",
     "react-router-dom": "^6.24.1"
   },
   "devDependencies": {
     "@electron/notarize": "^2.1.0",
     "@electron/rebuild": "^3.3.0",
+    "@hookform/devtools": "^4.3.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@svgr/webpack": "^8.1.0",
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.2",

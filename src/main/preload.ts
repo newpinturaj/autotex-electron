@@ -1,6 +1,7 @@
 // Disable no-unused-vars, broken for spread args
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import { callbackify } from 'util';
 
 export type Channels = 'ipc-example';
 
@@ -36,9 +37,21 @@ contextBridge.exposeInMainWorld('test', {
 
 const apiHandler = {
   openFile: () => ipcRenderer.invoke('dialog:openFile'),
-  saveAsPDF: (data: string) => ipcRenderer.invoke('dialog:savePDF', data),
+  saveAsPDF: (data: { path: string; latex: string }) =>
+    ipcRenderer.invoke('dialog:savePDF', data),
   saveAsTex: () => ipcRenderer.invoke('dialog:saveTex'),
-  loadPDF: () => ipcRenderer.invoke('load:pdf'),
+  loadPDF: (filepath: string) => ipcRenderer.invoke('load:pdf', filepath),
+  saveLoc: () => ipcRenderer.invoke('saveLoc:pdf'),
+  onPdfGen: (callback: Function) =>
+    ipcRenderer.on('gen:pdf', (event, filepath) => {
+      callback(filepath);
+    }),
+
+  sendLatex: (data: string) => ipcRenderer.invoke('request-stream', data),
+  onPDFBuffer: (callback: Function) =>
+    ipcRenderer.on('pdf-stream', (event, chunk) => {
+      callback(chunk);
+    }),
 };
 
 contextBridge.exposeInMainWorld('electronAPI', apiHandler);

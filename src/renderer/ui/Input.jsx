@@ -1,6 +1,24 @@
 import React from 'react';
 import styles from './Input.module.css';
 
+const Input = React.forwardRef((props, ref) => {
+  return props.rows === undefined ? (
+    <input
+      {...props}
+      className={`${styles.input_field} ${props.className && props.className}`}
+      ref={ref}
+    />
+  ) : (
+    <textarea
+      {...props}
+      className={`${styles.input_field} ${props.className && props.className}`}
+      ref={ref}
+    />
+  );
+});
+
+export default Input;
+
 // function Input(props) {
 //   // const { register } = useFormContext();
 //   const { ref, ...rest } = props;
@@ -18,17 +36,10 @@ import styles from './Input.module.css';
 //   );
 // }
 
-const Input = React.forwardRef((props, ref) => (
-  <div className={styles.container}>
-    {/* <input
-      name={name}
-      onBlur={onBlur}
-      ref={ref}
-      onChange={onChange}
-      className={styles.input}
-    /> */}
-    <input className={styles.input_field} {...props} ref={ref} />
-  </div>
-));
-
-export default Input;
+// <input
+//   name={name}
+//   onBlur={onBlur}
+//   ref={ref}
+//   onChange={onChange}
+//   className={styles.input}
+// />;

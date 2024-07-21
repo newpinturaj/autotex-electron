@@ -1,8 +1,8 @@
 // import 'katex/dist/katex.min.css';
 import { Outlet } from 'react-router-dom';
-import styles from './AppLayout.module.css';
 import PDFContext from '../context/PDFContext';
 import PdfViewer from './PdfViewer';
+import styles from './AppLayout.module.css';
 
 function AppLayout() {
   return (

@@ -297,6 +297,18 @@ export function genMainContent(data) {
       tempStr = tempStr.concat(`\\subsubsection{${obj.ssHead}}
 `)
     }
+    if(obj.imgPath){
+      console.log(obj.imgPath)
+      tempStr = tempStr.concat(`\\vspace{1cm plus 0.5cm}
+  \\begin{figure}[H]
+      \\centering
+      \\includegraphics[width=0.2\\textwidth]{"${obj.imgPath}"}
+  \\end{figure}
+  \\vspace{1cm plus 0.5cm}
+`)
+    }
+
+
     if(obj.para) {
       tempStr = tempStr.concat(`${obj.para} \\par
 `)
@@ -330,11 +342,11 @@ export function genRef(data) {
 
   if(data){
     str = str.concat(data.map(item => {
-      let tempStr = ""
-      if(item.refText){
-        tempStr = tempStr.concat(`  \\item ${item.refText} - `)
+      let tempStr = "\\item ";
+      if(item?.refText){
+        tempStr = `  \\item ${item.refText} - `;
       }
-      if(item.refUrl){
+      if(item?.refUrl){
         tempStr = tempStr.concat(`\\url{${item.refUrl}}
   `)
       }
@@ -347,7 +359,7 @@ export function genRef(data) {
     return str;
   }
 
-  return undefined;
+  return "";
 }
 
 export function genCloser() {

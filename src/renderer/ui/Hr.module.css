@@ -1,0 +1,5 @@
+.hr {
+  margin-bottom: 1em;
+  border: 0.9px solid rgb(79, 12, 223);
+  width: calc(100% - 1em);
+}

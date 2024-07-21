@@ -1,24 +1,26 @@
+import { useEffect } from 'react';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
-import { NavLink } from 'react-router-dom';
+import { MdDeleteForever } from 'react-icons/md';
+import { DevTool } from '@hookform/devtools';
 import Form from '../../ui/Form';
 import FormRow from '../../ui/FormRow';
 import Input from '../../ui/Input';
-import { genMainContent } from '../../template/latexGeneration';
+import LeftUILayout from '../../ui/LeftUILayout';
+import Button from '../../ui/Button';
+import Hr from '../../ui/Hr';
+import FlexBox from '../../ui/FlexBox';
+import PathSelector from '../../ui/PathSelector';
 
 function MainContent() {
-  // const { register, control, handleSubmit } = useForm({});
   const methods = useForm({
     defaultValues: {
-      mainContent: [
-        {
-          head: '',
-          sHead: '',
-          ssHead: '',
-        },
+      mainContent: JSON.parse(window.localStorage.getItem('mainContent')) || [
+        { head: '', sHead: '', ssHead: '', para: '' },
       ],
     },
   });
-  const { control, register, formState } = methods;
+
+  const { control, register, formState, watch, setValue } = methods;
   const { errors } = formState;
 
   const { fields, append, remove } = useFieldArray({
@@ -26,33 +28,30 @@ function MainContent() {
     control,
   });
 
-  const onSubmit = async (value) => {
-    let latex = window.localStorage.getItem('basicInfo');
-    latex = latex.concat(genMainContent(value.mainContent));
-    // const data = genMainContent(value.mainContent);
-    // console.log(data);
-    console.log(latex);
-  };
+  useEffect(() => {
+    const subscription = watch((value) => {
+      window.localStorage.setItem(
+        'mainContent',
+        JSON.stringify(value.mainContent),
+      );
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
-  const saveToLocalStorage = () => {
-    window.localStorage.setItem(
-      'mainContent',
-      JSON.stringify(methods.getValues().mainContent),
-    );
-
-    console.log(methods.getValues().mainContent);
+  const onSubmit = () => {
+    console.log('onSubmit Called in MainContent');
   };
 
   return (
-    <div>
+    <LeftUILayout prev="/" next="/references">
       <FormProvider {...methods}>
         <Form onSubmit={methods.handleSubmit(onSubmit)}>
           {fields.map((field, index) => (
             <div key={field.id}>
               {index > 0 && (
-                <button type="button" onClick={() => remove(index)}>
-                  &times;
-                </button>
+                <Button primary type="button" onClick={() => remove(index)}>
+                  <MdDeleteForever />
+                </Button>
               )}
               <FormRow label="Heading" error={errors?.[index]?.head?.message}>
                 <Input {...register(`mainContent.${index}.head`)} />
@@ -70,22 +69,35 @@ function MainContent() {
                 <Input {...register(`mainContent.${index}.ssHead`)} />
               </FormRow>
               <FormRow label="Paragraph" error={errors?.[index]?.para?.message}>
-                <textarea rows={5} {...register(`mainContent.${index}.para`)} />
+                <Input rows={5} {...register(`mainContent.${index}.para`)} />
               </FormRow>
+
+              <PathSelector
+                {...register(`mainContent.${index}.imgPath`)}
+                onClick={async () => {
+                  const path = await window.electronAPI.openFile();
+                  path[0] = path[0].replace(/\\/g, '/');
+                  setValue(`mainContent.${index}.imgPath`, path[0], {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                    shouldValidate: true,
+                  });
+                }}
+              />
+              <FormRow label="Image Caption">
+                <Input {...register(`mainContent.${index}.imgCaption`)} />
+              </FormRow>
+
+              <Hr />
             </div>
           ))}
-          <button type="button" onClick={() => append({ head: '' })}>
+          <Button primary type="button" onClick={() => append({ head: '' })}>
             Add Fields
-          </button>
-          <button type="submit">Submit</button>
+          </Button>
         </Form>
       </FormProvider>
-
-      <NavLink to="/">Prev</NavLink>
-      <NavLink to="/references" onClick={saveToLocalStorage}>
-        Next
-      </NavLink>
-    </div>
+      {/* <DevTool control={methods.control} /> */}
+    </LeftUILayout>
   );
 }
 
