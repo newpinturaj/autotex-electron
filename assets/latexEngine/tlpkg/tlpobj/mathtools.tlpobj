@@ -1,0 +1,37 @@
+name mathtools
+category Package
+revision 70838
+shortdesc Mathematical tools to use with amsmath
+longdesc Mathtools provides a series of packages designed to enhance the
+longdesc appearance of documents containing a lot of mathematics. The
+longdesc main backbone is amsmath, so those unfamiliar with this
+longdesc required part of the LaTeX system will probably not find the
+longdesc packages very useful. Mathtools provides many useful tools for
+longdesc mathematical typesetting. It is based on amsmath and fixes
+longdesc various deficiencies of amsmath and standard LaTeX. It
+longdesc provides: Extensible symbols, such as brackets, arrows,
+longdesc harpoons, etc.; Various symbols such as \coloneqq (:=); Easy
+longdesc creation of new tag forms; Showing equation numbers only for
+longdesc referenced equations; Extensible arrows, harpoons and
+longdesc hookarrows; Starred versions of the amsmath matrix environments
+longdesc for specifying the column alignment; More building blocks:
+longdesc multlined, cases-like environments, new gathered environments;
+longdesc Maths versions of \makebox, \llap, \rlap etc.; Cramped math
+longdesc styles; and more... Mathtools requires mhsetup.
+depend amsmath
+containersize 20532
+containerchecksum 51d46817b5b01572d98ff11af85282dc1116c13b5a7888e57e613ed0aee7b32fe89a501c09c48d8c44b5122f9829b0d57e40806fd87ba39cbf94c32a0134d414
+doccontainersize 1044780
+doccontainerchecksum 157c6d90f862161a8aa56f746b5df89f7db072d7fca6daaff211d6aaa681ac74b73f1b8bbf3bdb03115d4a72e548bba8cf8bb98924e8e2f8c2648c231f9a2f4f
+srccontainersize 91172
+srccontainerchecksum f73b6e4c1f5716407f887b3b11e7979e2800d82362476caba71d646d521842fa59bea94d7804debb9e48a1be68a4e80f53f8378d4b4462a8e47d1756341a4a1f
+runfiles size=30
+ texmf-dist/tex/latex/mathtools/empheq.sty
+ texmf-dist/tex/latex/mathtools/mathtools.sty
+ texmf-dist/tex/latex/mathtools/mhsetup.sty
+catalogue-also mhsetup empheq
+catalogue-contact-repository https://github.com/latex3/mathtools
+catalogue-ctan /macros/latex/contrib/mathtools
+catalogue-license lppl1.3c
+catalogue-topics maths
+catalogue-version 1.30

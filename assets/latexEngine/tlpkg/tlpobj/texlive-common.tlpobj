@@ -1,0 +1,9 @@
+name texlive-common
+category TLCore
+revision 71543
+shortdesc TeX Live documentation (common elements)
+postaction shortcut type=menu name="TeX Live documentation" 	cmd=TEXDIR/texmf-dist/doc/texlive/index.html
+containersize 348
+containerchecksum fe49d34680f826f157976410f0e75cbe6438e88bcba4f4cb0f925b1e2c54a2802e2c66f1f5c8424ed12f80c64120e74526cd31168a5a27d36a36a7dd152bc61c
+doccontainersize 643124
+doccontainerchecksum 4c04b3494649f2e2092e26356f057e89eeeeb75533b1b953b89fd154da40c64b4456d5492ca79fdf91f3c8fb097a4f2bbc4ef7802ffaed43369ee77471564560

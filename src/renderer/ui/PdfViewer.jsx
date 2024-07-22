@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { FaArrowRotateRight } from 'react-icons/fa6';
 // eslint-disable-next-line import/no-unresolved
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 // eslint-disable-next-line import/no-unresolved
@@ -9,6 +8,8 @@ import 'react-pdf/dist/Page/TextLayer.css';
 import styles from './PdfViewer.module.css';
 import genLatex from '../features/college-report/common';
 import Button from './Button';
+import FlexBox from './FlexBox';
+import MessageBox from './MessageBox';
 
 // @ts-expect-error This does not exist outside of polyfill which this is doing
 if (typeof Promise.withResolvers === 'undefined') {
@@ -31,15 +32,12 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url,
 ).toString();
 
-const renderPDF = async (setPdfData, setIsCompiling) => {
+const renderPDF = async (setPdfData, setIsCompiling, setError) => {
   try {
+    setError('');
+    setIsCompiling(true);
     const latex = genLatex();
     window.electronAPI.sendLatex(latex);
-    window.electronAPI.onPDFBuffer((bufferArray) => {
-      if (bufferArray) {
-        setPdfData(bufferArray);
-      }
-    });
   } catch (err) {
     console.log(err);
     setIsCompiling(false);
@@ -47,148 +45,154 @@ const renderPDF = async (setPdfData, setIsCompiling) => {
 };
 
 function PdfViewer() {
-  // const { pdfPath } = usePDFContext();
   const [pdfData, setPdfData] = useState(null);
   const [pageNo, setPageNo] = useState(1);
   const [maxPage, setMaxPage] = useState(undefined);
   const [isCompiling, setIsCompiling] = useState(false);
+  const [isPdfExporting, setIsPdfExporting] = useState(false);
+  const [isTexExporting, setIsTexExporting] = useState(false);
+  const [error, setError] = useState('');
   const { width, height, ref } = useResizeDetector();
 
-  const handlePDFCompilation = async () => {
+  const handleLoadSuccess = (value) => {
+    setMaxPage(value?.numPages);
+  };
+
+  const handleExportPDF = async () => {
     try {
-      let pdfLoc = window.localStorage.getItem('pdfLoc');
-      if (pdfLoc === null) {
-        pdfLoc = await window.electronAPI.saveLoc();
-        window.localStorage.setItem('pdfLoc', pdfLoc);
-      }
-      setIsCompiling(true);
+      setIsPdfExporting(true);
       const latex = genLatex();
-      console.log(latex);
-      await window.electronAPI.saveAsPDF({ path: pdfLoc, latex });
-      await window.electronAPI.onPdfGen(async (args) => {
-        console.log(args);
-        setIsCompiling(false);
-        const pdf = await window.electronAPI.loadPDF(pdfLoc);
-        if (!pdf) {
-          console.log('Error Fetching PDF');
-          return;
-        }
-        setPdfData(pdf);
-      });
+      await window.electronAPI.exportAsPDF(latex);
     } catch (err) {
       console.log(err);
-      setIsCompiling(false);
+      setIsPdfExporting(false);
     }
   };
 
-  const handleLoadSuccess = (value) => {
-    console.log(value);
-    setMaxPage(value?.numPages);
-    console.log(maxPage);
+  const handleExportTex = async () => {
+    try {
+      setIsTexExporting(true);
+      const latex = genLatex();
+      await window.electronAPI.exportAsTex(latex);
+    } catch (err) {
+      setIsTexExporting(false);
+      console.log(err);
+    }
   };
 
   useEffect(() => {
-    async function renderPdf() {
-      try {
-        let pdfLoc = window.localStorage.getItem('pdfLoc');
-        if (pdfLoc === null) {
-          pdfLoc = await window.electronAPI.saveLoc();
-          window.localStorage.setItem('pdfLoc', pdfLoc);
-        }
-        setIsCompiling(true);
-        const latex = genLatex();
-        await window.electronAPI.saveAsPDF({ path: pdfLoc, latex });
-        await window.electronAPI.onPdfGen(async (args) => {
-          console.log(args);
-          setIsCompiling(false);
-          const pdf = await window.electronAPI.loadPDF(pdfLoc);
-          if (!pdf) {
-            console.log('Error Fetching PDF');
-            return;
-          }
-          setPdfData(pdf);
-        });
-      } catch (err) {
-        console.log(err);
-        setIsCompiling(false);
+    // Event Listeners
+    window.electronAPI.onPDFBuffer((bufferArray) => {
+      setIsCompiling(false);
+      if (bufferArray) {
+        setPdfData(bufferArray);
       }
-    }
+    });
 
-    // renderPdf();
+    window.electronAPI.onError((err) => {
+      setError(err);
+      setIsCompiling(false);
+      setIsPdfExporting(false);
+      setIsTexExporting(false);
+      // throw new Error(err);
+      // console.log(err);
+    });
 
-    renderPDF(setPdfData, setIsCompiling);
+    window.electronAPI.onFinish(() => {
+      setIsPdfExporting(false);
+      setIsTexExporting(false);
+    });
+
+    window.electronAPI.onCancel(() => {
+      setIsPdfExporting(false);
+      setIsTexExporting(false);
+    });
+
+    renderPDF(setPdfData, setIsCompiling, setError);
   }, []);
 
   return (
     <div className={styles.container}>
-      <div className={styles.compileBtn}>
-        <Button type="button" onClick={handlePDFCompilation}>
-          Recompile <FaArrowRotateRight />
+      <div className={styles.btnContainer}>
+        <Button
+          disabled={isCompiling}
+          type="button"
+          onClick={() => {
+            renderPDF(setPdfData, setIsCompiling, setError);
+          }}
+        >
+          {isCompiling ? 'Compiling...' : 'Recompile'}
         </Button>
-      </div>
+        <FlexBox className={styles.flexContainer}>
+          <Button
+            disabled={isPdfExporting}
+            type="button"
+            onClick={handleExportPDF}
+          >
+            {isPdfExporting ? 'Exporting...' : 'Export PDF'}
+          </Button>
+          <Button
+            disabled={isTexExporting}
+            type="button"
+            onClick={handleExportTex}
+          >
+            {isTexExporting ? 'Exporting...' : 'Export TeX'}
+          </Button>
+        </FlexBox>
 
-      {pdfData ? (
+        <FlexBox className={styles.flexContainer}>
+          {pageNo > 1 && (
+            <Button type="button" onClick={() => setPageNo((curr) => curr - 1)}>
+              &#9001;
+            </Button>
+          )}
+          {pageNo < maxPage && (
+            <Button type="button" onClick={() => setPageNo((curr) => curr + 1)}>
+              &#9002;
+            </Button>
+          )}
+        </FlexBox>
+      </div>
+      <div className={styles.temp}>
         <div ref={ref} className={styles.pdfContainer}>
-          <div className={styles.btnContainer}>
-            {pageNo > 1 && (
-              <Button
-                className={styles.pdfBtn}
-                type="button"
-                onClick={() => setPageNo((curr) => curr - 1)}
-              >
-                &#9001;
-              </Button>
-            )}
-            {pageNo < maxPage && (
-              <Button
-                className={styles.pdfBtn}
-                type="button"
-                onClick={() => setPageNo((curr) => curr + 1)}
-              >
-                &#9002;
-              </Button>
-            )}
-          </div>
-          <Document file={pdfData} onLoadSuccess={handleLoadSuccess}>
-            {isCompiling ? (
-              <p>Compiling...</p>
-            ) : (
-              <Page pageNumber={pageNo} height={height} width={width} />
-            )}
-          </Document>
+          {isCompiling && !error && <MessageBox message="Compiling..." />}
+          {error && (
+            <MessageBox
+              type="error"
+              message={error.message || 'Something went wrong! Try again'}
+            />
+          )}
+          {!error && !isCompiling && (
+            <Document
+              noData={<MessageBox message="No Data to Preview" />}
+              loading={<MessageBox message="Loading..." />}
+              onLoadError={
+                <MessageBox
+                  type="error"
+                  message="Error while loading, try again"
+                />
+              }
+              onLoadProgress={({ loaded, total }) => {
+                <MessageBox
+                  type="success"
+                  message={`Loading... ${(loaded / total) * 100}`}
+                />;
+              }}
+              onLoadSuccess={handleLoadSuccess}
+              file={pdfData}
+            >
+              <Page
+                loading={<MessageBox message="Loading Page..." />}
+                pageNumber={pageNo}
+                height={height}
+                width={width}
+              />
+            </Document>
+          )}
         </div>
-      ) : (
-        <p>No PDF to Preview, click on Compile/Recompile</p>
-      )}
+      </div>
     </div>
   );
 }
 
 export default PdfViewer;
-
-// <div>
-//   <button type="button" onClick={handlePDFCompilation}>
-//     Recompile
-//   </button>
-// </div>;
-
-// <div className={styles.btnContainer}>
-//   {pageNo > 1 && (
-//     <button
-//       className={styles.pdfBtn}
-//       type="button"
-//       onClick={() => setPageNo((curr) => curr - 1)}
-//     >
-//       &#9001; Prev
-//     </button>
-//   )}
-//   {pageNo < maxPage && (
-//     <button
-//       className={styles.pdfBtn}
-//       type="button"
-//       onClick={() => setPageNo((curr) => curr + 1)}
-//     >
-//       Next &#9002;
-//     </button>
-//   )}
-// </div>;

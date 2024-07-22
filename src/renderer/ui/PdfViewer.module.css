@@ -1,5 +1,10 @@
 .container {
   /* border: 1px solid red; */
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 45px auto;
+  height: 100%;
+  border-left: 1px solid silver;
 }
 
 .pdfContainer {
@@ -8,37 +13,18 @@
   height: 90vh;
   width: calc(90vh * 0.71);
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.529);
-  position: relative;
 }
 
 .btnContainer {
-  margin: 1em;
-  width: 100%;
+  /* border: 1px solid blue; */
   display: flex;
   flex-direction: row;
-  gap: 1em;
-  justify-content: right;
-  position: absolute;
-  margin: auto;
-  z-index: 999;
-  /* bottom: 1em; */
-  top: -3.7em;
-  right: 0;
-  /* border: 1px solid red; */
-  width: 8em;
-}
-.pdfBtn {
-  padding: 0.2em 0.5em;
-  /* border: none; */
-  /* color: #fff; */
-  border-radius: 5px;
-  backface-visibility: 0.5;
+  align-items: end;
+  justify-content: space-between;
+  width: calc(90vh * 0.71);
+  margin: 0 auto;
 }
 
-.compileBtn {
-  /* border: 1px solid green; */
-  margin-left: 2.7em;
-  margin-top: 1.5em;
-  z-index: 999;
-  width: 15em;
+.flexContainer {
+  gap: 0.5em;
 }

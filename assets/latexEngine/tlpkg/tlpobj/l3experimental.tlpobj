@@ -1,0 +1,39 @@
+name l3experimental
+category Package
+revision 70637
+shortdesc Experimental LaTeX3 concepts
+longdesc The l3experimental packages are a collection of experimental
+longdesc implementations for aspects of the LaTeX3 kernel, dealing with
+longdesc higher-level ideas such as the Designer Interface. Some of them
+longdesc work as stand alone packages, providing new functionality, and
+longdesc can be used on top of LaTeX2e with no changes to the existing
+longdesc kernel. The present release includes: l3benchmark for measuring
+longdesc the time taken by TeX to run certain code; l3draw, a code-level
+longdesc interface for constructing drawings; l3graphics, an interfaces
+longdesc for the inclusion of graphics files; l3opacity, support for
+longdesc opacity in PDF output; l3str, support for string manipulation;
+longdesc xcoffins, which allows the alignment of boxes using a series of
+longdesc 'handle' positions, supplementing the simple TeX reference
+longdesc point; xgalley, which controls boxes receiving text for
+longdesc typesetting.
+depend l3kernel
+containersize 22092
+containerchecksum 497e644dfefe7b4dd487f293d938e3235aeff92272e2d9720de23ab481804678307cd150bdbe611c903abe9fd4e50e59ff841499b7519fa4b09a49d173abcc42
+doccontainersize 2945672
+doccontainerchecksum 898be8bb8f7047416e7c4561c81df8e3b7812c3bc0fc94f2f3ae82e4a3c007c518c3b761e50b9bc1743950b5791f19e06728c6352d6c245348dbdd0a858ead2d
+srccontainersize 75428
+srccontainerchecksum d0a316715978d9fed7fe802239f87c18022595f6749d2155e86d49bafb399a156e4dfe67c90e81ce01da956ce17b82b4a23013d780ee042872af79d7b5044e9b
+runfiles size=46
+ texmf-dist/tex/latex/l3experimental/l3benchmark/l3benchmark.sty
+ texmf-dist/tex/latex/l3experimental/l3draw/l3draw.sty
+ texmf-dist/tex/latex/l3experimental/l3graphics/l3graphics.sty
+ texmf-dist/tex/latex/l3experimental/l3opacity/l3opacity.sty
+ texmf-dist/tex/latex/l3experimental/l3str/l3str-format.sty
+ texmf-dist/tex/latex/l3experimental/xcoffins/xcoffins.sty
+ texmf-dist/tex/latex/l3experimental/xgalley/l3galley.sty
+ texmf-dist/tex/latex/l3experimental/xgalley/xgalley.sty
+catalogue-also l3kernel l3packages
+catalogue-contact-home http://www.latex-project.org/code.html
+catalogue-ctan /macros/latex/contrib/l3experimental
+catalogue-license lppl1.3c
+catalogue-topics macro-supp layout latex3 pre-release

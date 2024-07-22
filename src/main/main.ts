@@ -14,7 +14,6 @@ import { autoUpdater } from 'electron-updater';
 import fs from 'node:fs';
 import latex from 'node-latex';
 import log from 'electron-log';
-import MenuBuilder from './menu';
 import { resolveHtmlPath, toArrayBuffer } from './util';
 
 class AppUpdater {
@@ -158,161 +157,150 @@ ipcMain.on('test-ipc', () => {
   });
 });
 
+// API NAME: getFilesPath
 ipcMain.handle('dialog:openFile', () => {
-  const data = dialog.showOpenDialogSync(mainWindow as BrowserWindow);
-  console.log(data);
-  return data;
+  const filePath = dialog.showOpenDialogSync(mainWindow as BrowserWindow, {
+    filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png'] }],
+  });
+  return filePath;
 });
 
-// ipcMain.handle('dialog:savePDF', async (event, data) => {
-//   // const pdf = await fs.createReadStream(`${__dirname}/output.pdf`, 'utf-8');
+ipcMain.handle('dialog:saveTex', async (event, data) => {
+  if (data) {
+    const { canceled, filePath } = await dialog.showSaveDialog(
+      mainWindow as BrowserWindow,
+      {
+        defaultPath: 'output.tex',
+        filters: [{ extensions: ['tex'], name: 'LaTeX Source File' }],
+      },
+    );
 
-//   const { canceled, filePath } = await dialog.showSaveDialog(
-//     mainWindow as BrowserWindow,
-//     {
-//       defaultPath: 'output.txt',
-//       filters: [{ extensions: ['txt'], name: 'Text Document' }],
-//     },
-//   );
+    if (!canceled) {
+      await fs.writeFile(filePath as string, data, (err) => {
+        if (err) {
+          mainWindow?.webContents.send('error', err);
+          console.log(err);
+        }
 
-//   if (!canceled) {
-//     await fs.writeFile(filePath as string, 'This is text', (err) =>
-//       console.log(err),
-//     );
-//   }
-// });
+        mainWindow?.webContents.send('finish');
+      });
+    } else {
+      mainWindow?.webContents.send('cancel');
+    }
+  }
+});
 
-// PDF Generate
-
+// API NAME: saveAsPDF
 ipcMain.handle('dialog:savePDF', async (event, data) => {
-  if (data.path && data.latex) {
-    const RESOURCES_PATH = app.isPackaged
-      ? path.join(process.resourcesPath, 'assets/latexImages')
-      : path.join(__dirname, '../../assets/latexImages');
+  if (data) {
+    const { canceled, filePath } = await dialog.showSaveDialog(
+      mainWindow as BrowserWindow,
+      {
+        defaultPath: 'output.pdf',
+        filters: [{ extensions: ['pdf'], name: 'PDF Document' }],
+      },
+    );
+    if (!canceled) {
+      const RESOURCES_PATH = app.isPackaged
+        ? path.join(process.resourcesPath, 'assets/latexImages')
+        : path.join(__dirname, '../../assets/latexImages');
 
-    // mainWindow?.webContents.send('gen:pdf', 'pending');
+      const LATEX_COMMAND = app.isPackaged
+        ? path.join(
+            process.resourcesPath,
+            'assets/latexEngine/bin/windows/pdflatex.exe',
+          )
+        : path.join(
+            __dirname,
+            '../../assets/latexEngine/bin/windows/pdflatex.exe',
+          );
 
-    const pdf = latex(data.latex, {
-      inputs: RESOURCES_PATH,
-      passes: 2,
-    });
+      const pdf = latex(data, {
+        inputs: RESOURCES_PATH,
+        passes: 2,
+        cmd: LATEX_COMMAND,
+      });
+      console.log(filePath);
 
-    const output = fs.createWriteStream(data.path as string);
+      const output = fs.createWriteStream(filePath as string);
 
-    pdf.pipe(output);
-    pdf.on('error', (err) => {
-      console.log(err);
-      dialog.showErrorBox(err.name, err.message);
-      output.end(() => {
-        fs.unlink(data.path as string, (delErr) => {
-          if (delErr) {
-            dialog.showErrorBox(
-              delErr?.name || 'Error',
-              delErr?.message || "File can't be deleted",
-            );
-          }
+      pdf.pipe(output);
+      pdf.on('error', (err) => {
+        console.log(err);
+        mainWindow?.webContents.send('error', err);
+        dialog.showErrorBox(err.name, err.message);
+        output.end(() => {
+          fs.unlink(filePath as string, (delErr) => {
+            if (delErr) {
+              mainWindow?.webContents.send('error', delErr);
+              dialog.showErrorBox(
+                delErr?.name || 'Error',
+                delErr?.message || "File can't be deleted",
+              );
+            }
+          });
         });
       });
-    });
 
-    pdf.on('finish', () => {
-      console.log('PDF Generated');
-      mainWindow?.webContents.send('gen:pdf', 'finish');
-    });
+      pdf.on('finish', () => {
+        mainWindow?.webContents.send('finish');
+        console.log('PDF Generated');
+      });
+    } else {
+      mainWindow?.webContents.send('cancel');
+    }
   }
 });
-// ipcMain.handle('dialog:savePDF', async (event, data) => {
-//   const { canceled, filePath } = await dialog.showSaveDialog(
-//     mainWindow as BrowserWindow,
-//     {
-//       defaultPath: 'output.pdf',
-//       filters: [{ extensions: ['pdf'], name: 'PDF Document' }],
-//     },
-//   );
 
-//   if (!canceled) {
-//     const RESOURCES_PATH = app.isPackaged
-//       ? path.join(process.resourcesPath, 'assets/latexImages')
-//       : path.join(__dirname, '../../assets/latexImages');
-
-//     const pdf = latex(data, {
-//       inputs: RESOURCES_PATH,
-//       passes: 2,
-//     });
-//     const output = fs.createWriteStream(filePath as string);
-
-//     pdf.pipe(output);
-//     pdf.on('error', (err) => {
-//       console.log(err);
-//       dialog.showErrorBox(err.name, err.message);
-//       output.end(() => {
-//         fs.unlink(filePath as string, (delErr) => {
-//           if (delErr) {
-//             dialog.showErrorBox(
-//               delErr?.name || 'Error',
-//               delErr?.message || "File can't be deleted",
-//             );
-//           }
-//         });
-//       });
-//     });
-
-//     pdf.on('finish', () => {
-//       console.log('PDF Generated');
-//       mainWindow?.webContents.send('gen:pdf', true);
-//     });
+// API NAME: loadPDF
+// ipcMain.handle('load:pdf', async (event, filepath) => {
+//   try {
+//     const pdf = fs.readFileSync(filepath);
+//     // return pdf;
+//     const data = toArrayBuffer(pdf);
+//     return data;
+//   } catch (err) {
+//     console.error(err);
+//     return null;
 //   }
 // });
 
-ipcMain.handle('load:pdf', async (event, filepath) => {
-  try {
-    const pdf = fs.readFileSync(filepath);
-    // return pdf;
-    const data = toArrayBuffer(pdf);
-    return data;
-  } catch (err) {
-    console.error(err);
-    return null;
-  }
-});
-
-ipcMain.handle('saveLoc:pdf', async () => {
-  const { filePath, canceled } = await dialog.showSaveDialog({
-    defaultPath: 'output.pdf',
-    filters: [{ extensions: ['pdf'], name: 'PDF Document' }],
-  });
-
-  if (!canceled && filePath) {
-    console.log(filePath);
-    return filePath;
-  }
-
-  return null;
-});
-
-// ipcMain.handle('load:pdf', async () => {
-//   const { filePaths, canceled } = await dialog.showOpenDialog({
-//     title: 'Select PDF',
+// API NAME: saveLoc
+// ipcMain.handle('saveLoc:pdf', async () => {
+//   const { filePath, canceled } = await dialog.showSaveDialog({
+//     defaultPath: 'output.pdf',
+//     filters: [{ extensions: ['pdf'], name: 'PDF Document' }],
 //   });
 
-//   if (!canceled) {
-//     const pdf = fs.readFileSync(filePaths[0]);
-//     const data = toArrayBuffer(pdf);
-//     return data;
+//   if (!canceled && filePath) {
+//     console.log(filePath);
+//     return filePath;
 //   }
 
 //   return null;
 // });
 
+// API NAME: sendLatex
 ipcMain.handle('request-stream', async (event, data) => {
   if (data) {
     const RESOURCES_PATH = app.isPackaged
       ? path.join(process.resourcesPath, 'assets/latexImages')
       : path.join(__dirname, '../../assets/latexImages');
 
+    const LATEX_COMMAND = app.isPackaged
+      ? path.join(
+          process.resourcesPath,
+          'assets/latexEngine/bin/windows/pdflatex.exe',
+        )
+      : path.join(
+          __dirname,
+          '../../assets/latexEngine/bin/windows/pdflatex.exe',
+        );
+
     const transformStream = latex(data, {
       inputs: RESOURCES_PATH,
       passes: 2,
+      cmd: LATEX_COMMAND,
     });
 
     const chunks: Buffer[] = [];
@@ -320,10 +308,17 @@ ipcMain.handle('request-stream', async (event, data) => {
       chunks.push(Buffer.from(chunk));
     });
 
+    transformStream.on('error', (err) => {
+      if (err) {
+        console.log(err);
+        mainWindow?.webContents.send('error', err);
+      }
+    });
+
     transformStream.on('end', () => {
       const finalBuffer = Buffer.concat(chunks);
       const arrayBuffer = toArrayBuffer(finalBuffer);
-      mainWindow?.webContents.send('pdf-stream', arrayBuffer);
+      mainWindow?.webContents.send('pdf-stream', arrayBuffer); // API NAME: onPDFBuffer
     });
   }
 });

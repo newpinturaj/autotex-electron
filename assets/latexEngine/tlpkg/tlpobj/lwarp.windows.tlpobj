@@ -1,0 +1,8 @@
+name lwarp.windows
+category Package
+revision 65891
+shortdesc windows files of lwarp
+containersize 2308
+containerchecksum afc706f61d4d9c631d07edf7048951c220c29d284bccae95dbddd4a8121123fb5576d111e6bb4d16b12eaba6be2eb3e549f5b5e4d787ad0957ddea888371ad44
+binfiles arch=windows size=2
+ bin/windows/lwarpmk.exe

@@ -1,0 +1,70 @@
+name latex-lab
+category Package
+revision 71408
+shortdesc LaTeX laboratory
+longdesc This bundle holds optional files that are loaded in certain
+longdesc situations by kernel code (if available). While this code is
+longdesc still in development and the use is experimental, it is stored
+longdesc outside the format so that there can be intermediate releases
+longdesc not affecting the production use of LaTeX. Once the code is
+longdesc finalized and properly tested it will eventually move to the
+longdesc kernel and the corresponding file in this bundle will vanish.
+longdesc Note that none of these files are directly user accessible in
+longdesc documents (i.e., they aren't packages), so the process is
+longdesc transparent to documents already using the new functionality.
+containersize 43088
+containerchecksum c51167b3ac687afa863e1d41da232394ac4c9ea7b53952b6e7f11f0353d6154914dd04e4100bbbf015560682db5b827807a98b552bc5eda7ec4cf97f2390fc5d
+doccontainersize 8509724
+doccontainerchecksum da2349d22c117a6eb955cc20aee5c213c8f0635f174157f25304876e841758c4fc63122c2e06ae64ff716763345b32e32c89fdcd9c14bfefedf2fa1ef2d0efc9
+srccontainersize 120348
+srccontainerchecksum c59ee81ddbe526ce29bf6470ca29852c2881ad1b20fc37ae14b32460a94e656dd6ad73e393946d048b088a6e796fcb79e5cbf6e4e425db74a4f5cf29a8ad2ae6
+runfiles size=99
+ texmf-dist/tex/latex/latex-lab/bib-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/block-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/documentmetadata-support.ltx
+ texmf-dist/tex/latex/latex-lab/firstaid-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/float-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/glyphtounicode-cmex.tex
+ texmf-dist/tex/latex/latex-lab/graphic-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/latex-lab-amsmath.ltx
+ texmf-dist/tex/latex/latex-lab/latex-lab-footmisc.ltx
+ texmf-dist/tex/latex/latex-lab/latex-lab-footnotes.ltx
+ texmf-dist/tex/latex/latex-lab/latex-lab-kernel-changes.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-math.ltx
+ texmf-dist/tex/latex/latex-lab/latex-lab-mathpkg.ltx
+ texmf-dist/tex/latex/latex-lab/latex-lab-mathtools.ltx
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-bib.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-block.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-firstaid.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-float.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-graphic.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-marginpar.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-math.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-minipage.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-new-or-1.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-new-or-2.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-sec.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-table.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-text.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-title.sty
+ texmf-dist/tex/latex/latex-lab/latex-lab-testphase-toc.sty
+ texmf-dist/tex/latex/latex-lab/marginpar-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/math-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/minipage-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/new-or-1-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/new-or-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/phase-I-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/phase-II-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/phase-III-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/sec-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/table-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/tabular-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/tagpdf-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/tagpdf-ns-latex-lab.def
+ texmf-dist/tex/latex/latex-lab/text-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/title-latex-lab-testphase.ltx
+ texmf-dist/tex/latex/latex-lab/toc-latex-lab-testphase.ltx
+catalogue-contact-home https://www.latex-project.org
+catalogue-ctan /macros/latex/required/latex-lab
+catalogue-license lppl1.3c
+catalogue-topics format latex-devel

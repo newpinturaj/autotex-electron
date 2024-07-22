@@ -1,7 +1,6 @@
 // Disable no-unused-vars, broken for spread args
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import { callbackify } from 'util';
 
 export type Channels = 'ipc-example';
 
@@ -31,27 +30,37 @@ export type ElectronHandler = typeof electronHandler;
 
 // ------------- CUSTOM PRELOADS  ---------------
 
-contextBridge.exposeInMainWorld('test', {
-  clickBtn: (val: { age: string }) => ipcRenderer.send('test-ipc', val),
-});
-
 const apiHandler = {
-  openFile: () => ipcRenderer.invoke('dialog:openFile'),
-  saveAsPDF: (data: { path: string; latex: string }) =>
-    ipcRenderer.invoke('dialog:savePDF', data),
-  saveAsTex: () => ipcRenderer.invoke('dialog:saveTex'),
-  loadPDF: (filepath: string) => ipcRenderer.invoke('load:pdf', filepath),
-  saveLoc: () => ipcRenderer.invoke('saveLoc:pdf'),
-  onPdfGen: (callback: Function) =>
-    ipcRenderer.on('gen:pdf', (event, filepath) => {
-      callback(filepath);
+  getFilesPath: () => ipcRenderer.invoke('dialog:openFile'), // use in mainConent
+  exportAsPDF: (data: string) => ipcRenderer.invoke('dialog:savePDF', data), // use in Export PDF btn
+  exportAsTex: (data: string) => ipcRenderer.invoke('dialog:saveTex', data), // not Implemented
+  sendLatex: (data: string) => ipcRenderer.invoke('request-stream', data),
+
+  onError: (callback: Function) =>
+    ipcRenderer.on('error', (event, err) => {
+      callback(err);
     }),
 
-  sendLatex: (data: string) => ipcRenderer.invoke('request-stream', data),
+  onFinish: (callback: Function) =>
+    ipcRenderer.on('finish', () => {
+      callback();
+    }),
+
+  onCancel: (callback: Function) => {
+    ipcRenderer.on('cancel', () => {
+      callback();
+    });
+  },
+
   onPDFBuffer: (callback: Function) =>
     ipcRenderer.on('pdf-stream', (event, chunk) => {
       callback(chunk);
     }),
+
+  // ----------- NOT IN USE ------------
+  loadPDF: (filepath: string) => ipcRenderer.invoke('load:pdf', filepath),
+  saveLoc: () => ipcRenderer.invoke('saveLoc:pdf'),
+  // ------------------------------------
 };
 
 contextBridge.exposeInMainWorld('electronAPI', apiHandler);

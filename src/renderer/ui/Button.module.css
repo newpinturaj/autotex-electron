@@ -21,3 +21,9 @@
   border-radius: 2px;
   font-size: 1.2rem;
 }
+
+.disabled {
+  color: silver;
+  border-color: silver;
+  cursor: not-allowed;
+}

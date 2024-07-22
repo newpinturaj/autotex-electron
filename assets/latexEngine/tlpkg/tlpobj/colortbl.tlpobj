@@ -1,0 +1,19 @@
+name colortbl
+category Package
+revision 71734
+shortdesc Add colour to LaTeX tables
+longdesc The package allows rows and columns to be coloured, and even
+longdesc individual cells.
+containersize 3740
+containerchecksum 48729e946e902c869ec678c7de9590d245fd60ea983ae70d28f5956f73e0c0c7c3f3b64b8843205fff8bd8823b3c84c2fd3e4902004c1992b41628e5aea90cf5
+doccontainersize 645596
+doccontainerchecksum a50a143ef23b4d061a84c47eb713926d9416f5c494b608fa593f7fc3ba21320ba39e5e802a8029032f73f600d3051e2e941efe8d40b5b11c461d8ee6264a7deb
+srccontainersize 13060
+srccontainerchecksum 2140a9a5692c7be6677e5149a8cc78f14ded0fb3cd0e9a5d6d10295880e5562f162b933379882d786688208e273b4838827d14e17f79cce09dc9eef5e0bacda5
+runfiles size=4
+ texmf-dist/tex/latex/colortbl/colortbl.sty
+catalogue-also xcolor
+catalogue-ctan /macros/latex/contrib/colortbl
+catalogue-license lppl
+catalogue-topics colour table
+catalogue-version 1.0h

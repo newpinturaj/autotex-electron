@@ -298,13 +298,11 @@ export function genMainContent(data) {
 `)
     }
     if(obj.imgPath){
-      console.log(obj.imgPath)
-      tempStr = tempStr.concat(`\\vspace{1cm plus 0.5cm}
-  \\begin{figure}[H]
+      tempStr = tempStr.concat(`\\begin{figure}[H]
       \\centering
-      \\includegraphics[width=0.2\\textwidth]{"${obj.imgPath}"}
+      \\includegraphics[width=${(obj.imgWidth/100) || "0.5"}\\textwidth, angle=${obj.imgRotate || 0}]{"${obj.imgPath}"}
+      ${obj.imgCaption && `\\caption{${obj.imgCaption}}`}
   \\end{figure}
-  \\vspace{1cm plus 0.5cm}
 `)
     }
 

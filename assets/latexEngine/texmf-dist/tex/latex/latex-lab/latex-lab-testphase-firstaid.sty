@@ -1,0 +1,164 @@
+%%
+%% This is file `latex-lab-testphase-firstaid.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% latex-lab-firstaid.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 2021-2023 LaTeX Project
+%% 
+%% This file was generated from file(s) of the  `LaTeX-lab Bundle'.
+%% ------------------------------------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008 or later.
+%% 
+%% This file may only be distributed together with a copy of the LaTeX
+%% `LaTeX-lab Bundle'. You may however distribute the `LaTeX-lab Bundle'
+%% without such generated files.
+%% 
+%% The newest sources can be found below
+%% 
+%%    https://github.com/latex3/latex2e/required/latex-lab
+%% 
+%% where one can also log issues in case there are any.
+%% 
+%% 
+%% File: latex-lab-firstaid.dtx (C) Copyright 2023-2024 LaTeX Project
+\def\ltlabfirstaiddate{2024-05-25}
+\def\ltlabfirstaidversion{0.85d}
+
+\ProvidesPackage {latex-lab-testphase-firstaid} [%
+   \ltlabfirstaiddate\space v\ltlabfirstaiddate\space
+   Temporary patches to external packages needed for the tagging project]
+\ExplSyntaxOn
+\providecommand\FirstAidNeededT[3]{
+  \exp_args:Ncx\str_if_eq:onF{ver@#1.#2}{#3}
+      { \typeout{==>~ First~ Aid~ for~ #1.#2~ no~ longer~ applied!^^J
+          \@spaces Expected:^^J
+          \@spaces\@spaces #3^^J
+          \@spaces but~ found:^^J
+          \@spaces\@spaces \use:c{ver@#1.#2}^^J
+          \@spaces so~ I'm~ assuming~ it~ got~ fixed.
+      } }
+  \exp_args:Ncx\str_if_eq:onT{ver@#1.#2}{#3}
+}
+\ExplSyntaxOff
+
+\AddToHook{class/amsart/after}
+ {\def\@author{\authors}}
+\AddToHook{class/amsbook/after}
+ {\def\@author{\authors}}
+\AddToHook{package/verse/after}[latex-lab-firstaid]{%
+  \FirstAidNeededT{verse}{sty}{2014/05/10 v2.4b verse typesetting}%
+   {%
+     \AtBeginDocument{%
+       \renewenvironment{verse}[1][\linewidth]{%
+         \stepcounter{verse@envctr}%
+         \setcounter{poemline}{0}\refstepcounter{poemline}%
+         \setcounter{vslineno}{1}%
+         \let\\=\@vscentercr
+         \list{}{\itemsep \z@
+                 \itemindent  -\vindent
+                 \listparindent\itemindent
+                 \parsep       \stanzaskip
+                 \ifdim #1 < \linewidth
+                   \rightmargin        \z@
+                   \setlength{\leftmargin}{\linewidth}%
+                   \addtolength{\leftmargin}{-#1}%
+                   \addtolength{\leftmargin}{-0.5\leftmargin}%
+                 \else
+                   \rightmargin        \leftmargin
+                 \fi
+                 \addtolength{\leftmargin}{\vindent}}%
+         \item[]%
+       }%
+       {\endlist}%
+     }%
+   }%
+}
+\AddToHook{file/blindtext.sty/after}[latex-lab-firstaid]{%
+  \FirstAidNeededT{blindtext}{sty}{\blindfiledate\space\blindfileversion\space%
+                 blindtext-Package}%
+   {%
+    \renewcommand{\blind@items}{%
+       \setcounter{blind@listcount}{1}%
+      \loop
+      \ifblind@optional
+        \ifblind@long
+          \item[\blindtext@countitem] \blindtext@text
+        \else
+          \item[\blindtext@count] \blindtext@item
+        \fi
+        \else % \blind@optionalfalse
+          \ifblind@long
+            \item \blindtext@text
+          \else
+            \item \blindtext@countitem
+          \fi
+        \fi % \ifblind@optional
+        {%
+          \loop
+          \ifnum\value{blindlistlevel}>\value{blindlist@level}%
+            \stepcounter{blind@levelcount}%
+            \blind@list[\value{blindlist}]\relax
+            \addtocounter{blind@levelcount}{-1}%
+            \setcounter{blind@listcount}{1}%
+          \repeat
+        \expandafter}\if@endpe\@doendpe\fi % <----------changed
+      \ifnum\value{blind@listcount}<\value{blindlist}%
+        \stepcounter{blind@listcount}%
+      \repeat
+    }
+   }%
+ }
+\AddToHook{package/cleveref/after}
+ {
+   \let\@makefntext\cref@old@makefntext
+   \AddToHook{cmd/@makefntext/before}{%
+    \cref@constructprefix{footnote}{\cref@result}%
+    \protected@edef\cref@currentlabel{%
+     [footnote][\arabic{footnote}][\cref@result]%
+    \p@footnote\@thefnmark}}
+   \RenewDocumentCommand\refstepcounter{om}{%
+     \IfNoValueTF{#1}%
+      {\refstepcounter@noarg{#2}}%
+      {\refstepcounter@optarg[#1]{#2}}%
+    }%
+ }
+\ExplSyntaxOn
+\AddToHook{package/booktabs/after}
+ {
+  \def\@cmidrulea{
+   \multispan\@cmidla
+   &\multispan\@cmidlb
+   \unskip\hskip\cmrkern@l
+  {
+   \tag_mc_begin:n{artifact}
+   \CT@arc@\leaders\hrule \@height\@thisrulewidth\hfill\kern\z@}
+   \hskip\cmrkern@r
+   \tag_mc_end: \int_gdecr:N \g__tbl_row_int
+   \cr}
+
+  \def\@cmidruleb{%
+    \multispan\@cmidlb
+    \unskip\hskip \cmrkern@l%
+   {
+    \tag_mc_begin:n{artifact}
+    \CT@arc@\leaders\hrule \@height\@thisrulewidth\hfill\kern\z@}
+    \hskip\cmrkern@r
+    \tag_mc_end: \int_gdecr:N \g__tbl_row_int
+    \cr}
+  }
+\ExplSyntaxOff
+\endinput
+%%
+%% End of file `latex-lab-testphase-firstaid.sty'.

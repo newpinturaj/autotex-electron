@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 import styles from './LeftUILayout.module.css';
-import NavButton from './NavButton';
 
 function LeftUILayout({ children, prev, next }) {
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ function LeftUILayout({ children, prev, next }) {
             className={styles.navBtn}
             to={prev}
           >
-            Prev
+            &#9001; Prev
           </Button>
         )}
         {next && (
@@ -34,7 +33,7 @@ function LeftUILayout({ children, prev, next }) {
             className={styles.navBtn}
             to={next}
           >
-            Next
+            Next &#9002;
           </Button>
         )}
       </div>
