@@ -367,3 +367,71 @@ export function genCloser() {
 
   return str;
 }
+
+
+export function genMainContent2(data) {
+  //   const str = `
+  // % --------- MAIN CONTENT ---------
+  // \\newpage
+  // \\section{Introduction}
+  // \\subsection{History}
+  // \\subsubsection{Before 1876 A.D.}
+  // \\blindtext
+  // \\subsubsection{After 1876 A.D.}
+  // \\blindtext
+
+  // \\section{Planning of Work}
+  // \\subsection{Feasibility Study}
+  // \\blindtext
+  // \\subsection{Requirement Analysis}
+  // \\blindtext
+  //   `;
+    let str = `
+  % --------- MAIN CONTENT ---------
+  \\newpage
+  `;
+    str = str.concat(data.map(obj => {
+      let tempStr = ""
+      if(obj.head) {
+        tempStr = tempStr.concat(`\\section{${obj.head}}
+  `)
+      }
+      if(obj.sHead) {
+        tempStr = tempStr.concat(`\\subsection{${obj.sHead}}
+  `)
+      }
+      if(obj.ssHead) {
+        tempStr = tempStr.concat(`\\subsubsection{${obj.ssHead}}
+  `)
+      }
+      if(obj.list){
+        tempStr = tempStr.concat(`\\begin{itemize}
+  `)
+        obj.list.forEach(item => {
+          tempStr = tempStr.concat(`  \\item ${item}
+    `)
+        })
+        tempStr = tempStr.concat(`\\end{itemize}
+  `)
+      }
+
+      if(obj.img?.imgPath){
+        tempStr = tempStr.concat(`\\begin{figure}[H]
+        \\centering
+        \\includegraphics[width=${(obj.img.imgWidth/100) || "0.5"}\\textwidth, angle=${obj.img.imgRotate || 0}]{"${obj.img.imgPath}"}
+        ${obj?.img.imgCaption ? `\\caption{${obj.img.imgCaption}}` : ""}
+    \\end{figure}
+  `)
+      }
+
+
+      if(obj.para) {
+        tempStr = tempStr.concat(`${obj.para} \\par
+  `)
+      }
+
+      return tempStr;
+    }).join(''))
+
+    return str;
+  }

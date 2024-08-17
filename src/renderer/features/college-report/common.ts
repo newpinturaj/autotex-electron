@@ -5,6 +5,7 @@ import {
   genCloser,
   genCover,
   genMainContent,
+  genMainContent2,
   genPreamble,
   genRef,
   genTableOfContent,
@@ -34,7 +35,7 @@ const genLatex = (): string | undefined => {
     window.localStorage.getItem('mainContent') as string,
   );
   if (mainContent) {
-    latex = latex?.concat(genMainContent(mainContent));
+    latex = latex?.concat(genMainContent2(mainContent));
   }
 
   const ref = JSON.parse(window.localStorage.getItem('references') as string);

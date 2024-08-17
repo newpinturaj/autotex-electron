@@ -186,6 +186,8 @@ function PdfViewer() {
                 pageNumber={pageNo}
                 height={height}
                 width={width}
+                error={<MessageBox message="Failed to load Page" />}
+                onLoadError={() => setPageNo(1)}
               />
             </Document>
           )}

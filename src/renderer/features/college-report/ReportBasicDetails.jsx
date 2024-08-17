@@ -38,7 +38,7 @@ function ReportBasicDetails() {
             {/* <AdditionalDetails /> */}
             <div className={styles.buttonContainer}>
               <Button primary type="submit">
-                Save & Next &#9002;
+                Next &#9002;
               </Button>
             </div>
           </div>

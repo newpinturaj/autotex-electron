@@ -1,158 +1,354 @@
-import { useEffect } from 'react';
-import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 import { MdDeleteForever } from 'react-icons/md';
-import { DevTool } from '@hookform/devtools';
-import Form from '../../ui/Form';
+
 import FormRow from '../../ui/FormRow';
 import Input from '../../ui/Input';
-import LeftUILayout from '../../ui/LeftUILayout';
 import Button from '../../ui/Button';
-import Hr from '../../ui/Hr';
-import PathSelector from '../../ui/PathSelector';
 import FlexBox from '../../ui/FlexBox';
-import styles from './MainContent.module.css';
+import LeftUILayout from '../../ui/LeftUILayout';
 import Container from '../../ui/Container';
+import PathSelector from '../../ui/PathSelector';
+import styles from './MainContent.module.css';
+
+import Hr from '../../ui/Hr';
 
 function MainContent() {
-  const methods = useForm({
-    defaultValues: {
-      mainContent: JSON.parse(window.localStorage.getItem('mainContent')) || [
-        {
-          head: '',
-          sHead: '',
-          ssHead: '',
-          para: '',
-          imgCaption: '',
-          imgPath: '',
-          imgWidth: '50',
-          imgRotate: '0',
-        },
-      ],
-    },
-  });
+  const [mainContent, setMainContent] = useState(
+    JSON.parse(window.localStorage.getItem('mainContent')) || [
+      {
+        head: '',
+        sHead: '',
+        ssHead: '',
+        para: '',
+        img: { imgPath: '', imgCaption: '', imgWidth: '', imgRotate: '' },
+      },
+    ],
+  );
 
-  const { control, register, formState, watch, setValue } = methods;
-  const { errors } = formState;
-
-  const { fields, append, remove } = useFieldArray({
-    name: 'mainContent',
-    control,
-  });
-
-  useEffect(() => {
-    const subscription = watch((value) => {
-      window.localStorage.setItem(
-        'mainContent',
-        JSON.stringify(value.mainContent),
-      );
+  const handleChange = (e, index, name) => {
+    setMainContent((prev) => {
+      const updatedState = [...prev];
+      updatedState[index][name] = e.target.value;
+      return updatedState;
     });
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
-  const onSubmit = () => {
-    console.log('onSubmit Called in MainContent');
   };
+
+  const append = (index, obj) => {
+    setMainContent((prev) => {
+      const updatedState = [...prev];
+      updatedState.splice(index + 1, 0, obj);
+      return updatedState;
+    });
+  };
+
+  const appendListItem = (index, listInd) => {
+    setMainContent((prev) => {
+      const updatedState = [...prev];
+      updatedState[index]?.list.splice(listInd + 1, 0, '');
+      return updatedState;
+    });
+  };
+
+  const remove = (index) => {
+    setMainContent((prev) => {
+      const updatedState = prev.filter((_, i) => {
+        if (i === index) {
+          return false;
+        }
+        return true;
+      });
+
+      return updatedState;
+    });
+  };
+
+  const removeListItem = (index, listInd) => {
+    setMainContent((prev) => {
+      const updatedState = [...prev];
+
+      updatedState[index].list = updatedState[index]?.list.filter((item, i) => {
+        if (i === listInd) {
+          return false;
+        }
+        return true;
+      });
+
+      if (updatedState[index].list.length === 0) {
+        remove(index);
+      }
+
+      return updatedState;
+    });
+  };
+
+  const handleImg = async (e, index, name) => {
+    if (name === 'imgPath') {
+      let path = await window.electronAPI.getFilesPath();
+      if (!path) {
+        path = [''];
+      }
+
+      path[0] = path[0].replace(/\\/g, '/');
+      e.target.value = [path];
+    }
+
+    setMainContent((prev) => {
+      const updatedState = [...prev];
+      updatedState[index].img[name] = e.target.value;
+      return updatedState;
+    });
+  };
+
+  const handleListChange = (e, index, listInd) => {
+    setMainContent((prev) => {
+      const updatedState = [...prev];
+      updatedState[index].list[listInd] = e.target.value;
+      return updatedState;
+    });
+  };
+
+  // save data on each render
+  useEffect(() => {
+    window.localStorage.setItem('mainContent', JSON.stringify(mainContent));
+  }, [mainContent]);
 
   return (
     <LeftUILayout prev="/" next="/references">
       <Container heading="Main Content">
-        <FormProvider {...methods}>
-          <Form onSubmit={methods.handleSubmit(onSubmit)}>
-            {fields.map((field, index) => (
-              <div key={field.id}>
-                {index > 0 && (
-                  <Button primary type="button" onClick={() => remove(index)}>
-                    <MdDeleteForever />
-                  </Button>
-                )}
-                <FormRow label="Heading" error={errors?.[index]?.head?.message}>
-                  <Input {...register(`mainContent.${index}.head`)} />
-                </FormRow>
-                <FormRow
-                  label="Sub Heading"
-                  error={errors?.[index]?.sHead?.message}
+        {mainContent.map((element, index) => {
+          return (
+            <div key={index}>
+              <Hr />
+              <FlexBox className={styles.btnContainer}>
+                <Button primary type="button" onClick={() => remove(index)}>
+                  <MdDeleteForever />
+                </Button>
+                <Button
+                  primary
+                  type="button"
+                  onClick={() => {
+                    append(index - 1, { head: '' });
+                  }}
                 >
-                  <Input {...register(`mainContent.${index}.sHead`)} />
-                </FormRow>
-                <FormRow
-                  label="Sub Sub Heading"
-                  error={errors?.[index]?.ssHead?.message}
+                  Heading
+                </Button>
+                <Button
+                  primary
+                  type="button"
+                  onClick={() => {
+                    append(index - 1, { sHead: '' });
+                  }}
                 >
-                  <Input {...register(`mainContent.${index}.ssHead`)} />
+                  Sub Heading
+                </Button>
+                <Button
+                  primary
+                  type="button"
+                  onClick={() => {
+                    append(index - 1, { ssHead: '' });
+                  }}
+                >
+                  Sub Sub Heading
+                </Button>
+                <Button
+                  primary
+                  type="button"
+                  onClick={() => {
+                    append(index - 1, {
+                      img: { imgPath: '', imgWidth: '50', imgRotate: '0' },
+                    });
+                  }}
+                >
+                  Image
+                </Button>
+                <Button
+                  primary
+                  type="button"
+                  onClick={() => {
+                    append(index - 1, { list: [''] });
+                  }}
+                >
+                  Bullet Points
+                </Button>
+                <Button
+                  primary
+                  type="button"
+                  onClick={() => {
+                    append(index - 1, { para: '' });
+                  }}
+                >
+                  Paragraph
+                </Button>
+              </FlexBox>
+
+              {(element?.head || element?.head === '') && (
+                <FormRow label="Heading">
+                  <Input
+                    name="head"
+                    value={mainContent[index].head}
+                    onChange={(e) => handleChange(e, index, 'head')}
+                  />
                 </FormRow>
-
-                <FlexBox>
-                  <FormRow label="Image Path">
-                    <PathSelector
-                      {...register(`mainContent.${index}.imgPath`)}
-                      onClick={async () => {
-                        let path = await window.electronAPI.getFilesPath();
-                        if (!path) {
-                          path = [''];
-                        }
-
-                        path[0] = path[0].replace(/\\/g, '/');
-                        setValue(`mainContent.${index}.imgPath`, path[0], {
-                          shouldDirty: true,
-                          shouldTouch: true,
-                          shouldValidate: true,
-                        });
-                      }}
+              )}
+              {(element?.sHead || element?.sHead === '') && (
+                <FormRow label="Sub Heading">
+                  <Input
+                    name="sHead"
+                    value={mainContent[index].sHead}
+                    onChange={(e) => handleChange(e, index, 'sHead')}
+                  />
+                </FormRow>
+              )}
+              {(element?.ssHead || element?.ssHead === '') && (
+                <FormRow label="Sub Sub Heading">
+                  <Input
+                    name="ssHead"
+                    value={mainContent[index].ssHead}
+                    onChange={(e) => handleChange(e, index, 'ssHead')}
+                  />
+                </FormRow>
+              )}
+              {(element?.img || element?.img === '') && (
+                <>
+                  <FlexBox>
+                    <FormRow label="Image Path">
+                      <PathSelector
+                        name="imgPath"
+                        value={mainContent[index].img.imgPath}
+                        onClick={(e) => handleImg(e, index, 'imgPath')}
+                      />
+                    </FormRow>
+                    <FlexBox className={styles.flexContainer}>
+                      <FormRow label="Rotation (in Deg)">
+                        <Input
+                          name="imgRotate"
+                          value={mainContent[index].img.imgRotate}
+                          onChange={(e) => handleImg(e, index, 'imgRotate')}
+                        />
+                      </FormRow>
+                      <FormRow label="Image Width (in %)">
+                        <Input
+                          name="imgWidth"
+                          value={mainContent[index].img.imgWidth}
+                          onChange={(e) => handleImg(e, index, 'imgWidth')}
+                        />
+                      </FormRow>
+                    </FlexBox>
+                  </FlexBox>
+                  <FormRow label="Image Caption">
+                    <Input
+                      name="imgCaption"
+                      value={mainContent[index].img.imgCaption}
+                      onChange={(e) => handleImg(e, index, 'imgCaption')}
                     />
                   </FormRow>
-                  <FlexBox className={styles.flexContainer}>
-                    <FormRow label="Rotation (in Deg.)">
-                      <Input
-                        {...register(`mainContent.${index}.imgRotate`, {
-                          valueAsNumber: true,
-                        })}
-                      />
-                    </FormRow>
-                    <FormRow label="Image Width (in %)">
-                      <Input
-                        {...register(`mainContent.${index}.imgWidth`, {
-                          valueAsNumber: true,
-                        })}
-                      />
-                    </FormRow>
-                  </FlexBox>
-                </FlexBox>
-                <FormRow label="Image Caption">
-                  <Input {...register(`mainContent.${index}.imgCaption`)} />
+                </>
+              )}
+              {(element?.list || element?.list === []) && (
+                <FormRow label="Bullet Points">
+                  <div className={styles.border}>
+                    {element?.list.map((item, i) => (
+                      <FlexBox
+                        key={`list${i}`}
+                        className={styles.listContainer}
+                      >
+                        <Input
+                          name={`item${i}`}
+                          value={item}
+                          onChange={(e) => handleListChange(e, index, i)}
+                        />
+                        <Button
+                          type="button"
+                          onClick={() => appendListItem(index, i)}
+                        >
+                          Add
+                        </Button>
+                        <Button
+                          className={styles.test}
+                          type="button"
+                          onClick={() => removeListItem(index, i)}
+                        >
+                          <MdDeleteForever />
+                        </Button>
+                      </FlexBox>
+                    ))}
+                  </div>
                 </FormRow>
-                <FormRow
-                  label="Paragraph"
-                  error={errors?.[index]?.para?.message}
-                >
-                  <Input rows={5} {...register(`mainContent.${index}.para`)} />
-                </FormRow>
+              )}
 
-                <Hr />
-              </div>
-            ))}
-            <Button
-              primary
-              type="button"
-              onClick={() =>
-                append({
-                  head: '',
-                  sHead: '',
-                  ssHead: '',
-                  para: '',
-                  imgCaption: '',
-                  imgPath: '',
-                  imgWidth: '50',
-                  imgRotate: '0',
-                })
-              }
-            >
-              Add Fields
-            </Button>
-          </Form>
-        </FormProvider>
+              {(element?.para || element?.para === '') && (
+                <FormRow label="Paragraph">
+                  <Input
+                    rows={5}
+                    name="para"
+                    value={mainContent[index].para}
+                    onChange={(e) => handleChange(e, index, 'para')}
+                  />
+                </FormRow>
+              )}
+            </div>
+          );
+        })}
+        <FlexBox className={styles.btnContainer}>
+          <Button
+            primary
+            type="button"
+            onClick={() => {
+              append(mainContent.length - 1, { head: '' });
+            }}
+          >
+            Heading
+          </Button>
+          <Button
+            primary
+            type="button"
+            onClick={() => {
+              append(mainContent.length - 1, { sHead: '' });
+            }}
+          >
+            Sub Heading
+          </Button>
+          <Button
+            primary
+            type="button"
+            onClick={() => {
+              append(mainContent.length - 1, { ssHead: '' });
+            }}
+          >
+            Sub Sub Heading
+          </Button>
+          <Button
+            primary
+            type="button"
+            onClick={() => {
+              append(mainContent.length - 1, {
+                img: { imgPath: '', imgWidth: '50', imgRotate: '0' },
+              });
+            }}
+          >
+            Image
+          </Button>
+          <Button
+            primary
+            type="button"
+            onClick={() => {
+              append(mainContent.length - 1, { list: [''] });
+            }}
+          >
+            Bullet Points
+          </Button>
+          <Button
+            primary
+            type="button"
+            onClick={() => {
+              append(mainContent.length - 1, { para: '' });
+            }}
+          >
+            Paragraph
+          </Button>
+        </FlexBox>
       </Container>
-
-      {/* <DevTool control={methods.control} /> */}
+      <Button onClick={() => console.log(mainContent)}>Log Data</Button>
     </LeftUILayout>
   );
 }

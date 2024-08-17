@@ -1,3 +1,20 @@
 .flexContainer {
   flex-basis: 100%;
 }
+
+.btnContainer {
+  gap: 1em;
+}
+
+.listContainer {
+  /* border: 1px solid red; */
+  width: 100%;
+  gap: 1em;
+  margin-bottom: 0.5em;
+}
+
+.test {
+  color: red;
+  font-size: 1.5em;
+  border-color: red;
+}

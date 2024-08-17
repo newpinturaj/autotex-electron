@@ -13,7 +13,9 @@ import Container from '../../ui/Container';
 function References() {
   const methods = useForm({
     defaultValues: {
-      references: [{ refText: '', refUrl: '' }],
+      references: JSON.parse(window.localStorage.getItem('references')) || [
+        { refText: '', refUrl: '' },
+      ],
     },
   });
 
