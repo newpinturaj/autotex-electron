@@ -20,7 +20,7 @@ export function genPreamble(data) {
 \\fancyhead[L]{\\vspace{0.5em}\\fontsize{10}{12}\\selectfont Project Report - ${data.sem}${data.sem < 4 ? sup[data.sem - 1] : sup [3]} Semester}
 \\fancyhead[R]{\\vspace{0.5em}\\fontsize{10}{12}\\selectfont [${data.stu_reg1}${data.stu_reg2 && `, ${data.stu_reg2.slice(-3)}`}${data.stu_reg3 && `, ${data.stu_reg3.slice(-3)}`}${data.stu_reg4 && `, ${data.stu_reg4.slice(-3)}`}]}
 
-\\fancyfoot[L]{\\vspace{0.5em}\\fontsize{10}{12}\\selectfont Dept. of ${data.stu_dept}, MIT Muzaffarpur}
+\\fancyfoot[L]{\\vspace{0.5em}\\fontsize{10}{12}\\selectfont Dept. of ${data.stu_dept}}
 \\fancyfoot[R]{\\vspace{0.5em}\\fontsize{10}{12}\\selectfont \\thepage}
 
 \\renewcommand{\\headrulewidth}{0.4pt}
@@ -76,7 +76,7 @@ export function genCover(data) {
     \\textbf{\\huge ${data.title}}\\par
     \\textbf{A Project Report}\\par
     \\textit{submitted in partial fulfilment for the award of the degree of}\\par
-    \\textbf{Batchelor of Technology}\\par
+    \\textbf{Master of Computer Applications}\\par
     \\textbf{in}\\par
     \\textbf{${deptMap[data.stu_dept]}}\\par
     SUBMITTED BY\\par
@@ -109,7 +109,7 @@ export function genCover(data) {
     \\begin{groupcenter}
     \\bfseries
     Department of ${deptMap[data.stu_dept]}\\\\
-    Muzaffarpur Intitute of Technology, Muzaffarpur\\\\
+    GL Bajaj Institue of Technology and Management\\\\
     ${Intl.DateTimeFormat('en-IN', { month: 'long', year: 'numeric' }).format(new Date())}
     \\end{groupcenter}
 
@@ -136,7 +136,7 @@ export function genCandidateDecl(data) {
     \\textbf{\\Large Candidate's Declaration}
 \\end{center}
 
-We hereby certify that work presented in this report entitled \\textbf{${data.title}} in fulfilment of the requirements for the award of Bachelor of Technology with specialization in ${deptMap[data.stu_dept]}, submitted to \\textbf{Muzaffarpur Intitute of Technology, Muzaffarpur} is authentic record of our own work carried out during the period of ${Intl.DateTimeFormat('en-IN', { month: 'long', year: 'numeric' }).format(data.work_duration.from)} to ${Intl.DateTimeFormat('en-IN', { month: 'long', year: 'numeric' }).format(data.work_duration.to)} under the supervision of \\textbf{${data.guide_name}}, ${data.guide_degn}, Department of ${deptMap[data.guide_dept]}, Muzaffarpur Intitute of Technology, Muzaffarpur.\\par
+We hereby certify that work presented in this report entitled \\textbf{${data.title}} in fulfilment of the requirements for the award of Master of Computer Applications with specialization in ${deptMap[data.stu_dept]}, submitted to \\textbf{GL Bajaj Institute of Technology and Management} is authentic record of our own work carried out during the period of ${Intl.DateTimeFormat('en-IN', { month: 'long', year: 'numeric' }).format(data.work_duration.from)} to ${Intl.DateTimeFormat('en-IN', { month: 'long', year: 'numeric' }).format(data.work_duration.to)} under the supervision of \\textbf{${data.guide_name}}, ${data.guide_degn}, Department of ${deptMap[data.guide_dept]}, GL Bajaj Institute of Technology.\\par
 
 We have not submittted the matter presented in this report to any other university or institute for the award of any degree or for any other purpose.\\par
 
@@ -187,7 +187,7 @@ export function genCertificate(data) {
     \\textbf{\\Large Certificate}
 \\end{center}
 
-This is to certify that the project \\textbf{${data.title}} is a record of the authentic \\& bonafide work done of the following students, for fulfilment of the requirement for the award of Bachelor of Technology in ${deptMap[data.stu_dept]}, submitted to \\textbf{Muzaffarpur Intitute of Technology, Muzaffarpur}, has been carried out during the period, ${Intl.DateTimeFormat('en-IN', { month: 'long', year: 'numeric' }).format(data.work_duration.from)} to ${Intl.DateTimeFormat('en-IN', { month: 'long', year: 'numeric' }).format(data.work_duration.from)} under the supervision of \\textbf{${data.guide_name}}, ${data.guide_degn}, Department of ${deptMap[data.guide_dept]}, Muzaffarpur Institute of Technology, Muzaffarpur.
+This is to certify that the project \\textbf{${data.title}} is a record of the authentic \\& bonafide work done of the following students, for fulfilment of the requirement for the award of Bachelor of Technology in ${deptMap[data.stu_dept]}, submitted to \\textbf{GL Bajaj Institute of Technology}, has been carried out during the period, ${Intl.DateTimeFormat('en-IN', { month: 'long', year: 'numeric' }).format(data.work_duration.from)} to ${Intl.DateTimeFormat('en-IN', { month: 'long', year: 'numeric' }).format(data.work_duration.from)} under the supervision of \\textbf{${data.guide_name}}, ${data.guide_degn}, Department of ${deptMap[data.guide_dept]}, GL Bajaj Institute of Technology and Management.
 
 \\vspace{1.5cm}
 \\begin{table}[H]
